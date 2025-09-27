@@ -92,6 +92,51 @@
         });
     }
 
+    /* ========= Prism Language Loader (NEW) ========= */
+    async function ensurePrismLanguage(lang) {
+        if (!lang || lang === "none" || lang === "auto") return;
+        configureAutoloader();
+
+        // Sudah ada?
+        if (window.Prism && Prism.languages && Prism.languages[lang]) return;
+
+        // Programmatic load jika tersedia
+        const al = Prism?.plugins?.autoloader;
+        const loadFn = al && typeof al.loadLanguages === "function" ? al.loadLanguages : null;
+
+        if (loadFn) {
+            await new Promise((resolve) => {
+                try {
+                    loadFn.call(al, [lang], resolve);
+                    // Guard timeout bila callback tidak terpanggil
+                    setTimeout(resolve, 1000);
+                } catch {
+                    resolve();
+                }
+            });
+        } else {
+            // Trigger autoloader via dummy highlight + polling singkat
+            const dummy = document.createElement("code");
+            dummy.className = "language-" + lang;
+            dummy.textContent = "";
+            document.body.appendChild(dummy);
+            try {
+                Prism.highlightElement(dummy);
+            } catch {}
+            document.body.removeChild(dummy);
+
+            await new Promise((resolve) => {
+                const t0 = performance.now();
+                const iv = setInterval(() => {
+                    if (Prism.languages[lang] || performance.now() - t0 > 1000) {
+                        clearInterval(iv);
+                        resolve();
+                    }
+                }, 40);
+            });
+        }
+    }
+
     /* ========= I18N ========= */
     var i18n = {
         t: function (k) {
