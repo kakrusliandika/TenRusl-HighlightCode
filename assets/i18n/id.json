@@ -1,0 +1,20 @@
+{
+    "uiLang": "UI",
+    "theme": "Tema",
+    "codeLang": "Bahasa",
+    "lineNumbers": "Nomor baris",
+    "wrapLines": "Bungkus baris",
+    "editor": "Editor",
+    "preview": "Preview",
+    "paste": "Tempel",
+    "clear": "Bersihkan",
+    "copy": "Copy",
+    "copyRich": "Copy (Word/Docs)",
+    "exportPNG": "Export PNG",
+    "exportPDF": "Export PDF",
+    "print": "Print",
+    "dropHint": "Seret & jatuhkan file kode (aman, offline)",
+    "placeholder": "// Tempel kode Anda di sini atau seret file…",
+    "copied": "Tersalin.",
+    "copiedRich": "Tersalin dengan warna (Word/Docs)."
+}

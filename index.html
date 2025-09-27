@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id" class="no-js" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>TenRusli Highlight Code — Multi-Language Code Highlighter</title>
+        <meta
+            name="description"
+            content="Highlighter kode multi-bahasa dengan copy ke Word/Docs tanpa rusak format. Ekspor PNG/PDF. PWA. Super cepat & aman."
+        />
+        <meta name="theme-color" content="#8b5cf6" />
+        <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+        <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials" />
+
+        <link rel="stylesheet" href="/assets/styles.css" />
+
+        <!-- Prism (self-host 1.30.0) -->
+        <link id="prism-theme" rel="stylesheet" href="/assets/prismjs/package/themes/prism-okaidia.min.css" />
+        <link rel="stylesheet" href="/assets/prismjs/package/plugins/line-numbers/prism-line-numbers.min.css" />
+        <link rel="stylesheet" href="/assets/prismjs/package/plugins/match-braces/prism-match-braces.css" />
+
+        <script defer src="/assets/prismjs/package/prism.js"></script>
+        <script defer src="/assets/prismjs/package/plugins/line-numbers/prism-line-numbers.min.js"></script>
+        <script defer src="/assets/prismjs/package/plugins/match-braces/prism-match-braces.min.js"></script>
+        <script defer src="/assets/prismjs/package/plugins/autoloader/prism-autoloader.min.js"></script>
+    </head>
+    <body>
+        <header class="app-header">
+            <div class="brand">
+                <img src="/assets/icon.svg" width="28" height="28" alt="TRHC" />
+                <strong>
+                    <span class="brand-full">TenRusli Highlight Code</span>
+                    <span class="brand-abbr">TRHC</span>
+                </strong>
+                <span class="badge">PWA</span>
+            </div>
+
+            <nav class="controls" aria-label="Toolbar">
+                <!-- UI Language -->
+                <button
+                    id="btnUiLang"
+                    class="icon-btn"
+                    type="button"
+                    title="Toggle UI Language"
+                    aria-label="Toggle UI Language"
+                >
+                    <!-- globe -->
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <g fill="none" stroke="currentColor" stroke-width="1.6">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <path d="M3 12h18M12 3c3 3.7 3 13.3 0 18M12 3c-3 3.7-3 13.3 0 18" />
+                        </g>
+                    </svg>
+                    <span id="uiLangBadge" class="badge-mini">ID</span>
+                </button>
+
+                <!-- Theme -->
+                <button id="btnTheme" class="icon-btn" type="button" title="Toggle Theme" aria-label="Toggle Theme">
+                    <!-- sun -->
+                    <svg class="icon icon-sun-real" viewBox="0 0 24 24" aria-hidden="true">
+                        <defs>
+                            <radialGradient id="gSun" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#ffd166" />
+                                <stop offset="100%" stop-color="#f59e0b" />
+                            </radialGradient>
+                        </defs>
+                        <circle cx="12" cy="12" r="4.8" fill="url(#gSun)"></circle>
+                        <g stroke="#f59e0b" stroke-linecap="round" stroke-width="1.8">
+                            <path
+                                d="M12 2.2v2.9M12 18.9v2.9M2.2 12h2.9M18.9 12h2.9M5.2 5.2l2 2M16.8 16.8l2 2M18.8 5.2L16.8 7.2M7.2 16.8l-2 2"
+                            />
+                        </g>
+                    </svg>
+                    <!-- moon -->
+                    <svg class="icon icon-moon-real" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="#93c5fd" d="M21 12.8A8.8 8.8 0 1 1 11.2 3a7 7 0 1 0 9.8 9.8Z" />
+                    </svg>
+                </button>
+
+                <!-- Language popover trigger -->
+                <button
+                    id="btnLangMenu"
+                    class="icon-btn"
+                    type="button"
+                    title="Choose Code Language"
+                    aria-haspopup="dialog"
+                    aria-expanded="false"
+                    aria-controls="langPopover"
+                >
+                    <!-- code-switch -->
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <g
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M8 7 3 12l5 5M16 7l5 5-5 5M10 21l4-18" />
+                        </g>
+                    </svg>
+                    <span id="langBadge" class="badge-mini">JS</span>
+                </button>
+
+                <!-- Line numbers -->
+                <button
+                    id="btnLineNumbers"
+                    class="icon-btn ghost"
+                    type="button"
+                    role="switch"
+                    aria-checked="true"
+                    title="Toggle line numbers"
+                    aria-label="Toggle line numbers"
+                >
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                            <path d="M6 4v16M10 7h9M10 12h9M10 17h9" />
+                        </g>
+                    </svg>
+                </button>
+
+                <!-- Wrap lines -->
+                <button
+                    id="btnWrap"
+                    class="icon-btn ghost"
+                    type="button"
+                    role="switch"
+                    aria-checked="true"
+                    title="Toggle wrap lines"
+                    aria-label="Toggle wrap lines"
+                >
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <g
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M3 7h12a4 4 0 0 1 0 8H8" />
+                            <path d="m8 13-3 3 3 3" />
+                        </g>
+                    </svg>
+                </button>
+            </nav>
+
+            <!-- Language popover -->
+            <div
+                id="langPopover"
+                class="popover"
+                role="dialog"
+                aria-modal="false"
+                aria-label="Choose code language"
+                hidden
+            >
+                <div class="popover-head">
+                    <span data-i18n="codeLang">Bahasa</span>
+                    <button
+                        id="btnLangClose"
+                        class="icon-btn ghost sm"
+                        type="button"
+                        title="Close"
+                        aria-label="Close language menu"
+                    >
+                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                                <path d="m6 6 12 12M18 6 6 18" />
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+                <div class="popover-body">
+                    <input
+                        id="langSearch"
+                        class="search"
+                        type="search"
+                        placeholder="Search language…"
+                        aria-label="Search language"
+                    />
+                    <div id="langList" class="lang-grid" role="listbox" aria-label="Languages"></div>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <section class="panel left" aria-label="Editor">
+                <div class="panel-head">
+                    <h2 data-i18n="editor">Editor</h2>
+                    <div class="panel-actions">
+                        <!-- Mobile = icon only (label hidden by CSS) -->
+                        <button id="btnPaste" class="btn" type="button" aria-label="Paste">
+                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <g
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <!-- clipboard top -->
+                                    <path d="M10 3h4v2h-4z" />
+                                    <!-- board + sheet -->
+                                    <path d="M8 4h8a2 2 0 0 1 2 2v2h2v12H4V8h2V6a2 2 0 0 1 2-2z" />
+                                    <!-- down arrow (paste) -->
+                                    <path d="M12 10v6m0 0l-3-3m3 3l3-3" />
+                                </g>
+                            </svg>
+                            <span class="label" data-i18n="paste">Tempel</span>
+                        </button>
+
+                        <button id="btnClear" class="btn ghost" type="button" aria-label="Clear">
+                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <g
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <!-- eraser body -->
+                                    <path d="M15.5 4.5 21 10l-7.5 7.5H9L3.5 12 11 4.5z" />
+                                    <!-- desk line -->
+                                    <path d="M8 20h10" />
+                                    <!-- crumbs -->
+                                    <path d="M5.5 18.5l.8.8M7 17l.6.6" />
+                                </g>
+                            </svg>
+                            <span class="label" data-i18n="clear">Bersihkan</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="dropZone" class="dropzone" tabindex="0" aria-label="Drop files here">
+                    <textarea
+                        id="input"
+                        spellcheck="false"
+                        placeholder="// Tempel kode Anda di sini atau seret file…"
+                        aria-label="Source code editor"
+                    ></textarea>
+                    <div class="drop-hint" data-i18n="dropHint">
+                        Seret & jatuhkan file .js/.ts/.py/.go/.java/.php/.css/.html/.json/.md dll.
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel right" aria-label="Preview">
+                <div class="panel-head">
+                    <h2 data-i18n="preview">Preview</h2>
+                    <div class="panel-actions">
+                        <button id="btnCopy" class="btn" type="button" aria-label="Copy">
+                            <!-- copy -->
+                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <g
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+                                    <rect x="4" y="4" width="11" height="11" rx="2"></rect>
+                                </g>
+                            </svg>
+                            <span class="label" data-i18n="copy">Copy</span>
+                        </button>
+
+                        <button
+                            id="btnCopyRich"
+                            class="btn"
+                            type="button"
+                            title="Copy berwarna ke Word"
+                            aria-label="Copy Word"
+                        >
+                            <!-- copy-word -->
+                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <g
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+                                    <rect x="4" y="4" width="11" height="11" rx="2"></rect>
+                                    <path d="m12 13 2 6 2-6 2 6" />
+                                </g>
+                            </svg>
+                            <span class="label">Copy Word</span>
+                        </button>
+
+                        <button id="btnExportPNG" class="btn" type="button" aria-label="Save PNG">
+                            <!-- image -->
+                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <g
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                                    <circle cx="8" cy="9" r="2"></circle>
+                                    <path d="m21 16-5-5-6 6-3-3-4 4" />
+                                </g>
+                            </svg>
+                            <span class="label">PNG</span>
+                        </button>
+
+                        <button id="btnExportPDF" class="btn" type="button" aria-label="Save PDF">
+                            <!-- pdf -->
+                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <g
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <path d="M14 2v6h6M9 15h2.5a1.5 1.5 0 0 0 0-3H9v6M14 18v-6h3" />
+                                </g>
+                            </svg>
+                            <span class="label">PDF</span>
+                        </button>
+
+                        <button id="btnPrint" class="btn ghost" type="button" aria-label="Print">
+                            <!-- printer -->
+                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <g
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path
+                                        d="M7 8V4h10v4M6 17v4h12v-4M5 8h14a2 2 0 0 1 2 2v5h-3v-3H6v3H3v-5a2 2 0 0 1 2-2z"
+                                    />
+                                </g>
+                            </svg>
+                            <span class="label" data-i18n="print">Print</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="previewWrap" class="preview-wrap">
+                    <pre
+                        id="pre"
+                        class="language-none line-numbers match-braces"
+                    ><code id="code" class="language-none"></code></pre>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <div id="status" role="status" aria-live="polite"></div>
+            <div class="muted">
+                © <span id="year"></span> TenRusli Highlight Code - Powered By PrismJS •
+                <a href="https://github.com/kakrusliandika/TenRusl-HighlightCode" target="_blank" rel="noopener"
+                    >GitHub</a
+                >
+            </div>
+        </footer>
+
+        <script defer src="/assets/app.js"></script>
+    </body>
+</html>
