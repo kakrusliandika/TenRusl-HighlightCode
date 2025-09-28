@@ -70,11 +70,11 @@
 ```
 /
 ├─ index.html
-├─ sw.js
 ├─ manifest.webmanifest
 └─ assets/
    ├─ styles.css
    ├─ app.js
+   ├─ sw.js
    ├─ icon.svg
    ├─ languages.json
    ├─ i18n/
