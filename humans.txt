@@ -1,11 +1,13 @@
-/* TEAM */
-Developer: TenRusli (TRHC)
-Site: https://tenrusl-highlightcode.pages.dev
-GitHub: https://github.com/kakrusliandika/TenRusl-HighlightCode
+/* 
+TEAM
+  Developer: TenRusli (TRHC)
+  Site: https://tenrusl-highlightcode.pages.dev
+  GitHub: https://github.com/kakrusliandika/TenRusl-HighlightCode
 
-/* THANKS */
-PrismJS, html-to-image, jsPDF
+THANKS
+  PrismJS, html-to-image, jsPDF
 
-/* SITE */
-Language: Indonesian, English
-Standards: HTML5, CSS3, JS
+SITE
+  Languages: English
+  Standards: HTML5, CSS3, JavaScript
+*/

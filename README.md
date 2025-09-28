@@ -279,6 +279,22 @@ Cache-Control: public, max-age=31536000, immutable
 
 ---
 
+## 💰 Monetization & Consent
+
+-   **AdSense**: enable Auto Ads in `<head>` and use in-page units where appropriate.
+-   **Publisher ID**: `ca-pub-3735882384148563`
+-   **consent**: Implement Google **Consent Mode v2** with a Google-certified CMP for EEA/UK/CH.
+
+**Head include (Auto Ads):**
+
+```html
+<script
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3735882384148563"
+    crossorigin="anonymous"
+></script>
+```
+
 ## 🛠️ Customization
 
 -   **Add Languages**: drop Prism **.min.js** files into `assets/prismjs/package/components/` and (optionally) list them in `assets/languages.json` for the menu.
