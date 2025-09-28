@@ -1,0 +1,5 @@
+Contact: mailto:security@tenrusli.com
+Policy: https://tenrusl-highlightcode.pages.dev/security
+Acknowledgments: https://tenrusl-highlightcode.pages.dev/security#hall-of-fame
+Preferred-Languages: en, id
+Canonical: https://tenrusl-highlightcode.pages.dev/.well-known/security.txt

@@ -1,17 +1,38 @@
 <!DOCTYPE html>
-<html lang="id" class="no-js" dir="ltr">
+<html lang="en" class="no-js" dir="ltr">
+    <!-- Tambah di <html>: <html lang="id" dir="ltr"> -->
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>TenRusli Highlight Code — Multi-Language Code Highlighter</title>
+
+        <title>TenRusl Highlight Code — Copy rapi ke Word/Docs, Ekspor PNG/PDF</title>
         <meta
             name="description"
-            content="Highlighter kode multi-bahasa dengan copy ke Word/Docs tanpa rusak format. Ekspor PNG/PDF. PWA. Super cepat & aman."
+            content="Highlighter kode multi-bahasa dengan copy ke Word/Docs tanpa rusak format. Ekspor PNG/PDF. PWA. Super cepat & aman untuk developer."
         />
+
+        <!-- Indexing directives -->
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow" />
+
+        <!-- Brand & PWA -->
         <meta name="theme-color" content="#8b5cf6" />
+        <meta name="application-name" content="TenRusl Highlight Code" />
+        <meta name="author" content="Andika Rusli - TenRusl" />
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+        <!-- Canonical & Hreflang (ganti URL sesuai domainmu) -->
+        <link rel="canonical" href="https://tenrusl-highlightcode.pages.dev/" />
+        <link rel="alternate" href="https://tenrusl-highlightcode.pages.dev/" hreflang="en" />
+        <link rel="alternate" href="https://tenrusl-highlightcode.pages.dev/id/" hreflang="id-ID" />
+        <link rel="alternate" href="https://tenrusl-highlightcode.pages.dev/" hreflang="x-default" />
+
+        <!-- Icons -->
         <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials" />
 
+        <!-- Styles -->
         <link rel="stylesheet" href="/assets/styles.css" />
 
         <!-- Prism (self-host 1.30.0) -->
@@ -23,7 +44,74 @@
         <script defer src="/assets/prismjs/package/plugins/line-numbers/prism-line-numbers.min.js"></script>
         <script defer src="/assets/prismjs/package/plugins/match-braces/prism-match-braces.min.js"></script>
         <script defer src="/assets/prismjs/package/plugins/autoloader/prism-autoloader.min.js"></script>
+
+        <!-- Open Graph -->
+        <meta property="og:site_name" content="TenRusl Highlight Code" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="TenRusl Highlight Code — Multi-Language Code Highlighter" />
+        <meta
+            property="og:description"
+            content="Highlighter kode multi-bahasa dengan copy ke Word/Docs tanpa rusak format. Ekspor PNG/PDF. PWA. Super cepat & aman."
+        />
+        <meta property="og:url" content="https://tenrusl-highlightcode.pages.dev/" />
+        <meta property="og:image" content="https://tenrusl-highlightcode.pages.dev/assets/icon.svg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Tampilan TenRusl Highlight Code dengan hasil highlight rapi" />
+        <meta property="og:locale" content="id_ID" />
+        <meta property="og:locale:alternate" content="en_US" />
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="TenRusl Highlight Code — Multi-Language Code Highlighter" />
+        <meta
+            name="twitter:description"
+            content="Copy ke Word/Docs tanpa rusak format. Ekspor PNG/PDF. PWA. Super cepat & aman."
+        />
+        <meta name="twitter:image" content="https://tenrusl-highlightcode.pages.dev/assets/icon.svg" />
+        <!-- <meta name="twitter:site" content="@akunmu"> -->
+
+        <!-- Structured Data: WebApplication -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebApplication",
+                "name": "TenRusl Highlight Code",
+                "url": "https://tenrusl-highlightcode.pages.dev/",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Web",
+                "inLanguage": "id",
+                "description": "Highlighter kode multi-bahasa dengan copy ke Word/Docs tanpa rusak format. Ekspor PNG/PDF. PWA. Super cepat & aman.",
+                "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+                "creator": {
+                    "@type": "Organization",
+                    "name": "TenRusl",
+                    "url": "https://tenrusl-highlightcode.pages.dev/",
+                    "logo": "https://tenrusl-highlightcode.pages.dev/assets/icon.svg"
+                }
+            }
+        </script>
+
+        <!-- Structured Data: WebSite + (opsional) Site Search -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "url": "https://tenrusl-highlightcode.pages.dev/",
+                "name": "TenRusl Highlight Code",
+                "inLanguage": "id",
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://tenrusl-highlightcode.pages.dev/search?q={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                }
+            }
+        </script>
+
+        <!-- UX/mobile -->
+        <meta name="format-detection" content="telephone=no" />
     </head>
+
     <body>
         <header class="app-header">
             <div class="brand">

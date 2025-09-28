@@ -1,66 +1,71 @@
-# TenRusli Highlight Code (TRHC) — Multi‑Language Code Highlighter
+# TenRusli Highlight Code (TRHC) — Multi-Language Code Highlighter
 
-> PWA highlighter ringan, cepat, dan aman. **Copy berwarna ke Word/Google Docs tanpa rusak format**, ekspor **PNG/PDF**, **offline‑first** dengan Service Worker, **auto‑detect** bahasa + **PrismJS autoloader**.
+> A lightweight, fast, and secure **PWA** highlighter. **Copy with colors to Word/Google Docs without breaking formatting**, export **PNG/PDF**, **offline-first** with a Service Worker, **auto-detect** language + **PrismJS autoloader**.
 
 ![Status](https://img.shields.io/badge/PWA-Ready-8b5cf6)
 ![Prism](https://img.shields.io/badge/PrismJS-1.30.0-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Stack](https://img.shields.io/badge/Stack-Vanilla%20JS%20%7C%20Prism%20%7C%20SW-111)
+![Stars](https://img.shields.io/github/stars/kakrusliandika/TenRusl-HighlightCode?style=social)
+![Forks](https://img.shields.io/github/forks/kakrusliandika/TenRusl-HighlightCode?style=social)
 
 ---
 
-## Daftar Isi
+## Table of Contents
 
--   [Fitur Utama](#fitur-utama)
--   [Demo Cepat](#demo-cepat)
--   [Struktur Direktori](#struktur-direktori)
--   [Jalankan Lokal](#jalankan-lokal)
--   [Konfigurasi Penting](#konfigurasi-penting)
+-   [Key Features](#key-features)
+-   [Quick Demo](#quick-demo)
+-   [Directory Structure](#directory-structure)
+-   [Run Locally](#run-locally)
+-   [Install (Open Source)](#install-open-source)
+-   [Docker (Optional)](#docker-optional)
+-   [Important Configuration](#important-configuration)
 -   [PWA & Caching](#pwa--caching)
 -   [I18N](#i18n)
--   [Keamanan & Header](#keamanan--header-yang-disarankan)
--   [Kustomisasi](#kustomisasi)
+-   [Security & Recommended Headers](#security--recommended-headers)
+-   [Customization](#customization)
 -   [Troubleshooting](#troubleshooting)
 -   [Deployment](#deployment)
--   [Kredit](#kredit)
--   [Roadmap](#roadmap-pandangan-ke-depan)
--   [Lisensi](#lisensi)
+-   [Contributing](#contributing)
+-   [Credits](#credits)
+-   [Roadmap (forward-looking)](#roadmap-forward-looking)
+-   [License](#license)
 -   [English (Short)](#-english-short)
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Key Features
 
--   **Auto‑detect bahasa** dari isi kode, ekstensi file, _code fence_ (```lang), atau _shebang_  
-    → fallback ke keyword‑scoring multi‑bahasa.  
-    → _Auto override_ ke **AUTO** jika deteksi baru unggul ≥ **2 poin** dari pilihan manual.
--   **PrismJS self‑host** (v1.30.0) + **Autoloader**  
-    → muat komponen bahasa **on‑demand** dari `/assets/prismjs/package/components/`.
--   **Copy (Word/Docs)** berwarna dan **copy biasa** (plain text).
--   **Export PNG/PDF** (via `html-to-image` & `jsPDF`) + **Print** siap pakai.
--   **PWA**: offline‑first, **Service Worker** dengan strategi cache berbeda untuk:
+-   **Auto-detect language** from code content, file extension, code fence (` ```lang `), or shebang  
+    → falls back to multi-language keyword scoring.  
+    → _Auto-override_ to **AUTO** if a new detection beats the manual choice by **≥ 2 points**.
+-   **PrismJS self-hosted** (v1.30.0) + **Autoloader**  
+    → loads language components **on-demand** from `/assets/prismjs/package/components/`.
+-   **Copy (Word/Docs)** with colors and **plain copy**.
+-   **Export PNG/PDF** (via `html-to-image` & `jsPDF`) + ready-to-use **Print**.
+-   **PWA**: offline-first, **Service Worker** with distinct strategies for:
     -   **CORE** (precache),
-    -   **RUNTIME** (cache‑first / stale‑while‑revalidate),
-    -   **COMPONENTS** Prism (network‑first + limit **200** entri).
+    -   **RUNTIME** (cache-first / stale-while-revalidate),
+    -   **COMPONENTS** (Prism languages; network-first, capped at **200** entries).
 -   **UI/UX**:
-    -   Tema **Gelap/Terang** (sinkron dengan tema Prism).
+    -   **Dark/Light** themes (synced with Prism).
     -   **Line Numbers**, **Wrap lines**.
-    -   **Language chooser** dengan pencarian + **badge** bahasa (_JS, TS, PY, GO_, dll).
-    -   **I18N**: **ID/EN** (mudah tambah bahasa baru).
-    -   **A11y**: ARIA roles, _toolbar_, _dialog/popover_, _status live region_.
+    -   **Language chooser** with search + language **badges** (_JS, TS, PY, GO_, etc.).
+    -   **I18N**: **ID/EN** (easy to add more).
+    -   **A11y**: ARIA roles, toolbar, dialog/popover, live region status.
 
 ---
 
-## 🚀 Demo Cepat
+## 🚀 Quick Demo
 
-1. **Tempel** atau **drop** file kode ke panel kiri.
-2. Pilih bahasa (atau biarkan **AUTO**).
-3. **Copy** / **Copy Word** / **PNG** / **PDF** / **Print** dari toolbar _Preview_.
-4. PWA siap **Install** (Add to Home Screen).
+1. **Paste** or **drop** a code file into the left panel.
+2. Choose a language (or keep **AUTO**).
+3. Use **Copy** / **Copy Word** / **PNG** / **PDF** / **Print** from the Preview toolbar.
+4. PWA is ready to **Install** (Add to Home Screen).
 
 ---
 
-## 🗂️ Struktur Direktori
+## 🗂️ Directory Structure
 
 ```
 /
@@ -86,16 +91,16 @@
          ├─ plugins/
          │  ├─ line-numbers/
          │  └─ match-braces/
-         └─ components/     # autoloader target (bhs .min.js)
+         └─ components/     # autoloader target (lang .min.js)
 ```
 
 ---
 
-## 🔧 Jalankan Lokal
+## 🔧 Run Locally
 
-> **Tanpa build**. Karena ada Service Worker, jalankan di **HTTP** (bukan `file://`).
+> **No build step required.** Because a Service Worker is used, serve over **HTTP** (not `file://`).
 
-Pilih salah satu server statis:
+Pick any static server:
 
 ```bash
 # Node (serve)
@@ -108,73 +113,144 @@ python -m http.server 5173
 bunx serve . -p 5173
 ```
 
-Lalu buka `http://localhost:5173`.
+Then open `http://localhost:5173`.
 
 ---
 
-## 🧩 Konfigurasi Penting
+## 📦 Install (Open Source)
 
-### Tema & Prism
+### 1) Clone the repository
 
--   Toggle tema mem‑switch `<html class="light">` **dan** mengganti `link#prism-theme`
+```bash
+# SSH (recommended if you set up SSH keys)
+git clone --depth 1 git@github.com:kakrusliandika/TenRusl-HighlightCode.git
+# or HTTPS
+git clone --depth 1 https://github.com/kakrusliandika/TenRusl-HighlightCode.git
+
+cd TenRusl-HighlightCode
+```
+
+> `--depth 1` gives you a shallow clone for a faster download.
+
+### 2) Run it
+
+Pick one (no build step):
+
+```bash
+# Using Node "serve"
+npx serve . -p 5173
+
+# Or Python
+python -m http.server 5173
+
+# Or Bun
+bunx serve . -p 5173
+```
+
+Open `http://localhost:5173` and start highlighting.
+
+### 3) Keep your fork in sync (optional)
+
+```bash
+# Add the original repo as upstream
+git remote add upstream https://github.com/kakrusliandika/TenRusl-HighlightCode.git
+
+# Fetch and merge updates
+git fetch upstream
+git checkout main
+git merge upstream/main
+```
+
+### 4) Create a new branch for your changes (for PRs)
+
+```bash
+git checkout -b feat/awesome-improvements
+# ...do your changes...
+git add -A
+git commit -m "feat: awesome improvements to TRHC"
+git push origin feat/awesome-improvements
+# Then open a Pull Request on GitHub
+```
+
+---
+
+## 🐳 Docker (Optional)
+
+Serve the static site via **nginx** in a container:
+
+```bash
+# from repo root
+docker run --rm -it -p 5173:80 -v "$PWD":/usr/share/nginx/html:ro nginx:alpine
+# open http://localhost:5173
+```
+
+> Ensure `sw.js` stays at the repository root so the Service Worker scope covers `/`.
+
+---
+
+## 🧩 Important Configuration
+
+### Theme & Prism
+
+-   Theme toggle switches `<html class="light">` **and** swaps `link#prism-theme`:
     -   Dark → `prism-okaidia.min.css`
     -   Light → `prism-solarizedlight.min.css`
 
-### Autoloader Prism
+### Prism Autoloader
 
 -   `Prism.plugins.autoloader.languages_path = "/assets/prismjs/package/components/"`
--   Letakkan bahasa tambahan (mis. `prism-elixir.min.js`) ke folder **components** agar autoload.
+-   Place additional languages (e.g., `prism-elixir.min.js`) in **components** to autoload.
 
-### Auto‑Detect Bahasa
+### Language Auto-Detect
 
-Urutan heuristik:
+Heuristic order:
 
-1. _Code fence_ → ```lang
-2. Ekstensi file (saat _drag & drop_)
-3. _Shebang_ (e.g. `#!/usr/bin/env python`)
-4. Tanda tangan regex (e.g. `package main`, `def`, `class`, `<html>`, dll)
-5. _Loose JSON_ detector
-6. **Keyword‑scoring** multi‑bahasa (best/top2)  
-   → Jika user memilih bahasa manual namun skor AUTO unggul ≥ **2** (`AUTO_OVERRIDE_GAP`), sistem kembali ke **AUTO** demi akurasi.
+1. Code fence → ` ```lang `
+2. File extension (on drag & drop)
+3. Shebang (e.g., `#!/usr/bin/env python`)
+4. Signature regex (e.g., `package main`, `def`, `class`, `<html>`, etc.)
+5. Loose JSON detector
+6. **Keyword scoring** across languages (best/top2)  
+   → If the user selects a language manually but AUTO leads by **≥ 2** (`AUTO_OVERRIDE_GAP`), revert to **AUTO** for accuracy.
 
-### Copy ke Word/Docs
+### Copy to Word/Docs
 
--   `Copy` → teks polos.
--   `Copy Word` → klon `<pre>` (hilangkan _line‑numbers gutter_), **inline style** semua warna/font agar **tidak rusak** di Word/Docs.
+-   `Copy` → plain text.
+-   `Copy Word` → clones `<pre>` (removes line-numbers gutter), **inlines styles** (colors/fonts) so output **doesn’t break** in Word/Docs.
 
-### Ekspor PNG/PDF
+### Export PNG/PDF
 
 -   PNG: `html-to-image.toBlob(pre, { pixelRatio: 2 })`
--   PDF: render ke PNG, _fit_ ke A4 margin 24pt, `jsPDF.addImage(...)`.
+-   PDF: render to PNG, fit to A4 (24pt margins), `jsPDF.addImage(...)`.
 
 ---
 
 ## 🌐 PWA & Caching
 
-`sw.js` menggunakan tiga cache:
+`sw.js` uses three caches:
 
--   **CORE_CACHE**: `PRECACHE` (HTML/CSS/JS/manifest/icon + tema Prism).
+-   **CORE_CACHE**: `PRECACHE` (HTML/CSS/JS/manifest/icon + Prism themes).
 -   **RUNTIME_CACHE**:
-    -   **navigate**: _network‑then‑cache_ (fallback ke `/index.html` saat offline).
-    -   **asset** (script/style/font/image origin sama): **cache‑first**.
-    -   **lainnya**: **stale‑while‑revalidate**.
--   **COMPONENTS_CACHE**: Prism components `networkFirstWithLimit` (max **200** entri) + `enforceLimit`.
+    -   **navigate**: _network-then-cache_ (fallback to `/index.html` offline).
+    -   **asset** (same-origin scripts/styles/fonts/images): **cache-first**.
+    -   **others**: **stale-while-revalidate**.
+-   **COMPONENTS_CACHE**: Prism components `networkFirstWithLimit` (max **200** entries) + `enforceLimit`.
 
-> Ubah `VERSION` untuk _cache busting_ saat rilis baru.
+> Bump `VERSION` for cache busting when releasing.
 
 ---
 
 ## 🌍 I18N
 
--   File kamus: `/assets/i18n/id.json`, `/assets/i18n/en.json`.
--   Tambah bahasa baru → buat `xx.json`, panggil `setUiLang("xx")`.
--   Beberapa label di‑normalize (mis. “Copy Word”, “PNG”, “PDF”) agar konsisten.
+-   Dictionaries: `/assets/i18n/id.json`, `/assets/i18n/en.json`.
+-   Add a new language → create `xx.json`, call `setUiLang("xx")`.
+-   Some labels are normalized (e.g., “Copy Word”, “PNG”, “PDF”) for consistency.
 
 ---
 
-## 🛡️ Keamanan & Header yang Disarankan
+## 🛡️ Security & Recommended Headers
 
-Contoh **CSP** (sesuaikan domain vendor jika mengubah lokasi `htmlotimage.js/jsPDF`):
+Example **CSP** (adjust vendor domains if `htmlotimage.js/jsPDF` locations change):
 
 ```
 Content-Security-Policy:
@@ -189,7 +265,7 @@ Content-Security-Policy:
   frame-ancestors 'none';
 ```
 
-Tambahkan juga:
+Also add:
 
 ```
 X-Content-Type-Options: nosniff
@@ -199,73 +275,86 @@ Permissions-Policy: camera=(), microphone=(), geolocation=()
 Cache-Control: public, max-age=31536000, immutable
 ```
 
-> Di Cloudflare Pages/Netlify, atur via _Response headers_ atau file `_headers`.
+> On Cloudflare Pages/Netlify, set via **Response headers** or an `_headers` file.
 
 ---
 
-## 🛠️ Kustomisasi
+## 🛠️ Customization
 
--   **Tambah Bahasa**: masukkan file Prism **.min.js** ke `assets/prismjs/package/components/` dan (opsional) daftar di `assets/languages.json` (untuk tampil di menu).
--   **Tema Prism**: ganti file pada `assets/prismjs/package/themes/` dan perbarui `THEMES` di `assets/app.js`.
--   **Batas Komponen**: ubah `COMPONENTS_MAX` di `sw.js` (default 200).
--   **Auto‑override**: ubah `AUTO_OVERRIDE_GAP` (default 2) di `assets/app.js`.
+-   **Add Languages**: drop Prism **.min.js** files into `assets/prismjs/package/components/` and (optionally) list them in `assets/languages.json` for the menu.
+-   **Prism Themes**: swap files in `assets/prismjs/package/themes/` and update `THEMES` in `assets/app.js`.
+-   **Component Limit**: tweak `COMPONENTS_MAX` in `sw.js` (default 200).
+-   **Auto-override**: adjust `AUTO_OVERRIDE_GAP` (default 2) in `assets/app.js`.
 
 ---
 
 ## 🧪 Troubleshooting
 
--   **Service Worker tidak aktif** → akses via `http(s)://`, bukan `file://`.
--   **Copy Word tidak berwarna** → cek izin clipboard & jangan blokir _rich clipboard_.
--   **Bahasa tidak ter‑highlight** → pastikan komponen Prism tersedia; lihat Network (autoloader ambil `.min.js`).
--   **PNG/PDF gagal** → pastikan `htmlotimage.js` & `jspdf.js` termuat (cek Console).
+-   **Service Worker inactive** → access via `http(s)://`, not `file://`.
+-   **Copy Word not colored** → check clipboard permissions and don’t block the rich clipboard.
+-   **Language not highlighted** → ensure the Prism component exists; check Network (autoloader fetches `.min.js`).
+-   **PNG/PDF fails** → verify `htmlotimage.js` & `jspdf.js` are loaded (check Console).
 
 ---
 
 ## 📦 Deployment
 
-### Cloudflare Pages (disarankan)
+### Cloudflare Pages (recommended)
 
--   **Build command**: _(kosongkan)_
+-   **Build command**: _(leave empty)_
 -   **Output dir**: `/` (root)
--   Pastikan `sw.js` berada di **root** karena didaftarkan via `navigator.serviceWorker.register("/sw.js")`.
+-   Ensure `sw.js` is at project **root** (registered via `navigator.serviceWorker.register("/sw.js")`).
 
-### Netlify / Vercel / Static hosting lainnya
+### Netlify / Vercel / Other static hosts
 
--   Unggah seluruh direktori sebagaimana struktur di atas.
--   Atur header keamanan seperti bagian **Keamanan**.
+-   Upload the directory exactly as structured above.
+-   Apply the security headers from the **Security** section.
 
 ---
 
-## 📚 Kredit
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. **Fork** the repo and create your branch: `git checkout -b feat/your-feature`
+2. **Commit** your changes: `git commit -m "feat: add amazing feature"`
+3. **Push** to the branch: `git push origin feat/your-feature`
+4. **Open a Pull Request**
+
+Please follow conventional commits (`feat:`, `fix:`, `docs:`, etc.) and keep PRs focused. If you plan a big change, open an **issue** first to discuss.
+
+---
+
+## 📚 Credits
 
 -   **PrismJS** (MIT) — Syntax highlighting.
--   **html-to-image** — Render DOM ke PNG.
--   **jsPDF** — Generasi PDF sisi klien.
+-   **html-to-image** — Render DOM to PNG.
+-   **jsPDF** — Client-side PDF generation.
 
 ---
 
-## 🛣️ Roadmap (pandangan ke depan)
+## 🛣️ Roadmap (forward-looking)
 
--   [ ] Opsi tema Prism lebih banyak (di luar Okaidia/Solarized Light).
--   [ ] **Batch Export** (multi‑snippet ke satu PDF).
--   [ ] **Share** (permalink dengan _state_ terserialisasi).
--   [ ] **Keyboard shortcuts** (copy/copy‑word/export).
--   [ ] Dukungan **tema custom** berbasis CSS Vars.
+-   [ ] More Prism theme options (beyond Okaidia/Solarized Light).
+-   [ ] **Batch Export** (multi-snippet into a single PDF).
+-   [ ] **Share** (permalink with serialized state).
+-   [ ] **Keyboard shortcuts** (copy/copy-word/export).
+-   [ ] Support **custom themes** via CSS Vars.
 
 ---
 
-## 📄 Lisensi
+## 📄 License
 
-**MIT** — silakan gunakan, modifikasi, dan distribusikan dengan bebas.  
-(Lihat `LICENSE` jika ditambahkan pada repo.)
+**MIT** — feel free to use, modify, and redistribute.  
+(See `LICENSE` if added to the repo.)
 
 ---
 
 ## 🇬🇧 English (Short)
 
-**TRHC** is a lightweight **PWA** code highlighter powered by **PrismJS (self‑host)**. It auto‑detects languages, lets you **copy with colors** to **Word/Google Docs**, and **export PNG/PDF**—all **offline‑first**.
+**TRHC** is a lightweight **PWA** code highlighter powered by **self-hosted PrismJS**. It auto-detects languages, lets you **copy with colors** to **Word/Google Docs**, and **export PNG/PDF**—all **offline-first**.
 
--   Auto language detection (fences, extension, shebang, signatures, keyword scoring; auto‑override gap = 2).
+-   Auto language detection (fences, extension, shebang, signatures, keyword scoring; auto-override gap = 2).
 -   Prism **autoloader** (components loaded on demand).
 -   Copy (plain / rich for Word/Docs), Export (PNG/PDF), Print.
 -   Light/Dark theme, line numbers, wrap, searchable language menu.
@@ -278,4 +367,4 @@ Cache-Control: public, max-age=31536000, immutable
 ---
 
 **Repo**: https://github.com/kakrusliandika/TenRusl-HighlightCode  
-**Author**: TenRusli (TRHC)
+**Author**: Andika Rusli - TenRusl
