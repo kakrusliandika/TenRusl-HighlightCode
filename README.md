@@ -71,27 +71,74 @@
 /
 ├─ index.html
 ├─ manifest.webmanifest
+├─ ads.txt
+├─ robots.txt
+├─ sitemap.xml
+├─ sitemap-index.xml
+├─ CODE_OF_CONDUCT.md
+├─ CONTRIBUTING.md
+├─ LICENSE
+├─ README.md
+├─ humans.txt
+├─ consent-base.js
+├─ googleFClG-yRowubCICDyQFjDm65cnX4tk4WYcmDA0EXmRQQ.html   # Google site verification
+├─ _headers
+├─ _redirects
+├─ .well-known/
+│  └─ security.txt
+├─ pages/
+│  ├─ index.html
+│  ├─ ad-unit-example.html
+│  ├─ contact.html
+│  ├─ cookies.html
+│  ├─ head-snippets.html
+│  ├─ index-injection-example.html
+│  ├─ privacy.html
+│  └─ terms.html
 └─ assets/
-   ├─ styles.css
-   ├─ app.js
-   ├─ sw.js
-   ├─ icon.svg
-   ├─ languages.json
+   ├─ index.html
+   ├─ css/
+   │  ├─ app.css
+   │  ├─ pages.css
+   │  └─ index.html
+   ├─ js/
+   │  ├─ app.js
+   │  ├─ pages.js
+   │  ├─ sw.js
+   │  └─ index.html
+   ├─ images/
+   │  ├─ icon.svg
+   │  └─ index.html
+   ├─ json/
+   │  ├─ languages.json
+   │  └─ index.html
    ├─ i18n/
    │  ├─ en.json
-   │  └─ id.json
-   ├─ htmlotimage.js        # vendor (html-to-image)
-   ├─ jspdf.js              # vendor (jsPDF UMD)
-   └─ prismjs/
-      └─ package/
-         ├─ prism.js
-         ├─ themes/
-         │  ├─ prism-okaidia.min.css
-         │  └─ prism-solarizedlight.min.css
-         ├─ plugins/
-         │  ├─ line-numbers/
-         │  └─ match-braces/
-         └─ components/     # autoloader target (lang .min.js)
+   │  ├─ id.json
+   │  └─ index.html
+   └─ plugin/
+      ├─ index.html
+      ├─ htmlotimage.js          # vendor (html-to-image)
+      ├─ jspdf.js                # vendor (jsPDF UMD)
+      └─ prismjs/
+         └─ package/
+            ├─ prism.js
+            ├─ components/       # autoloader target (lang .min.js)
+            ├─ plugins/
+            │  ├─ line-numbers/
+            │  └─ match-braces/
+            ├─ themes/
+            │  ├─ prism-okaidia.min.css
+            │  └─ prism-solarizedlight.min.css
+            ├─ _headers
+            ├─ CHANGELOG.md
+            ├─ components.js
+            ├─ components.json
+            ├─ dependencies.js
+            ├─ index.html
+            ├─ LICENSE
+            ├─ package.json
+            └─ README.md
 ```
 
 ---

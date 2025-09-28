@@ -38,7 +38,7 @@
 /index.html
   Cache-Control: no-cache, must-revalidate
 
-/sw.js
+/js/sw.js
   Cache-Control: no-cache
   Service-Worker-Allowed: /
 
@@ -51,7 +51,7 @@
   Cache-Control: public, max-age=31536000, immutable
 
 # Prism components (autoloaded -> long cache)
-/assets/prismjs/package/components/*
+/assets/plugin/prismjs/package/components/*
   Cache-Control: public, max-age=31536000, immutable
 
 # i18n JSON (not fingerprinted -> shorter cache for quick updates)
@@ -63,6 +63,6 @@
 /assets/og/*
   Cache-Control: public, max-age=31536000, immutable
 
-/assets/icon.svg
+/assets/images/icon.svg
   Content-Type: image/svg+xml; charset=utf-8
   Cache-Control: public, max-age=31536000, immutable

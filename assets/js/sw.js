@@ -9,24 +9,24 @@ const PRECACHE = [
     "/",
     "/index.html",
     "/manifest.webmanifest",
-    "/assets/styles.css",
-    "/assets/app.js",
-    "/assets/icon.svg",
-    "/assets/languages.json",
+    "/assets/css/app.css",
+    "/assets/js/app.js",
+    "/assets/images/icon.svg",
+    "/assets/json/languages.json",
     "/assets/i18n/id.json",
     "/assets/i18n/en.json",
-    "/assets/htmlotimage.js",
-    "/assets/jspdf.js",
+    "/assets/plugin/htmlotimage.js",
+    "/assets/plugin/jspdf.js",
 
-    "/assets/prismjs/package/prism.js",
-    "/assets/prismjs/package/plugins/line-numbers/prism-line-numbers.min.js",
-    "/assets/prismjs/package/plugins/line-numbers/prism-line-numbers.min.css",
-    "/assets/prismjs/package/plugins/match-braces/prism-match-braces.min.js",
-    "/assets/prismjs/package/plugins/match-braces/prism-match-braces.css",
-    "/assets/prismjs/package/plugins/autoloader/prism-autoloader.min.js",
+    "/assets/plugin/prismjs/package/prism.js",
+    "/assets/plugin/prismjs/package/plugins/line-numbers/prism-line-numbers.min.js",
+    "/assets/plugin/prismjs/package/plugins/line-numbers/prism-line-numbers.min.css",
+    "/assets/plugin/prismjs/package/plugins/match-braces/prism-match-braces.min.js",
+    "/assets/plugin/prismjs/package/plugins/match-braces/prism-match-braces.css",
+    "/assets/plugin/prismjs/package/plugins/autoloader/prism-autoloader.min.js",
 
-    "/assets/prismjs/package/themes/prism-okaidia.min.css",
-    "/assets/prismjs/package/themes/prism-solarizedlight.min.css",
+    "/assets/plugin/prismjs/package/themes/prism-okaidia.min.css",
+    "/assets/plugin/prismjs/package/themes/prism-solarizedlight.min.css",
 ];
 
 self.addEventListener("install", (e) => {
@@ -59,7 +59,7 @@ self.addEventListener("fetch", (e) => {
     const same = url.origin === self.location.origin;
     const isNav =
         req.mode === "navigate" || (req.destination === "" && req.headers.get("accept")?.includes("text/html"));
-    const isComp = same && url.pathname.startsWith("/assets/prismjs/package/components/");
+    const isComp = same && url.pathname.startsWith("/assets/plugin/prismjs/package/components/");
 
     if (isComp) {
         e.respondWith(networkFirstWithLimit(COMPONENTS_CACHE, req, COMPONENTS_MAX));

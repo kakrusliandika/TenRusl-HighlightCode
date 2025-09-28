@@ -4,12 +4,12 @@
 
     /* ========= Config ========= */
     const THEMES = {
-        dark: "/assets/prismjs/package/themes/prism-okaidia.min.css",
-        light: "/assets/prismjs/package/themes/prism-solarizedlight.min.css",
+        dark: "/assets/plugin/prismjs/package/themes/prism-okaidia.min.css",
+        light: "/assets/plugin/prismjs/package/themes/prism-solarizedlight.min.css",
     };
-    const COMPONENTS_PATH = "/assets/prismjs/package/components/";
-    const VENDOR_HTML2IMG = "/assets/htmlotimage.js";
-    const VENDOR_JSPDF = "/assets/jspdf.js";
+    const COMPONENTS_PATH = "/assets/plugin/prismjs/package/components/";
+    const VENDOR_HTML2IMG = "/assets/plugin/htmlotimage.js";
+    const VENDOR_JSPDF = "/assets/plugin/jspdf.js";
     const AUTO_OVERRIDE_GAP = 2;
 
     /* ========= DOM ========= */
@@ -871,7 +871,7 @@
     function main() {
         setUiLang(store.get("uiLang", "id"))
             .then(function () {
-                return loadJSON("/assets/languages.json").catch(function () {
+                return loadJSON("/assets/json/languages.json").catch(function () {
                     return { languages: [] };
                 });
             })
