@@ -83,7 +83,7 @@
         <!-- Apple PWA extras (opsional) -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <link rel="apple-touch-icon" href="/assets/icon.svg"
+        <link rel="apple-touch-icon" href="/assets/icon.svg" />
 
         <!-- Structured Data: WebApplication -->
         <script type="application/ld+json">
@@ -120,6 +120,15 @@
                     "query-input": "required name=search_term_string"
                 }
             }
+        </script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-BSD1MR7KQN"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", "G-BSD1MR7KQN");
         </script>
 
         <!-- UX/mobile -->
