@@ -1,8 +1,4 @@
 User-agent: *
 Allow: /
 
-# Keep everything crawlable (JS/CSS/images). SPA/PWA friendly.
-Sitemap:https://tenrusl-highlightcode.pages.dev/sitemap.xml
-
-# Optional for some crawlers (ignored by Google, used by Yandex/Baidu)
-Host: tenrusl-highlightcode.pages.dev
+Sitemap: https://tenrusl-highlightcode.pages.dev/sitemap.xml
