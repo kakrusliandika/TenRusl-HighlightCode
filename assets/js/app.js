@@ -1,29 +1,19 @@
-/* TenRusli Highlight Code – app.js (stable) */
+/* app.js — language popover, autodetect, Prism render, copy/export/print */
 (() => {
     "use strict";
 
-    /* ========= Config ========= */
-    const THEMES = {
-        dark: "/assets/plugin/prismjs/package/themes/prism-okaidia.min.css",
-        light: "/assets/plugin/prismjs/package/themes/prism-solarizedlight.min.css",
-    };
     const COMPONENTS_PATH = "/assets/plugin/prismjs/package/components/";
     const VENDOR_HTML2IMG = "/assets/plugin/htmlotimage.js";
     const VENDOR_JSPDF = "/assets/plugin/jspdf.js";
-    const AUTO_OVERRIDE_GAP = 2;
 
-    /* ========= DOM ========= */
     const els = {
-        prismTheme: document.getElementById("prism-theme"),
-        uiLangBadge: document.getElementById("uiLangBadge"),
-        btnUiLang: document.getElementById("btnUiLang"),
-        btnTheme: document.getElementById("btnTheme"),
         btnLangMenu: document.getElementById("btnLangMenu"),
-        langBadge: document.getElementById("langBadge"),
         langPopover: document.getElementById("langPopover"),
         btnLangClose: document.getElementById("btnLangClose"),
         langSearch: document.getElementById("langSearch"),
         langList: document.getElementById("langList"),
+        langBadge: document.getElementById("langBadge"),
+
         btnLineNumbers: document.getElementById("btnLineNumbers"),
         btnWrap: document.getElementById("btnWrap"),
         input: document.getElementById("input"),
@@ -37,154 +27,39 @@
         btnExportPDF: document.getElementById("btnExportPDF"),
         btnPrint: document.getElementById("btnPrint"),
         dropZone: document.getElementById("dropZone"),
-        status: document.getElementById("status"),
-        year: document.getElementById("year"),
     };
-    if (els.year) els.year.textContent = new Date().getFullYear();
 
-    /* ========= Store ========= */
     const store = {
-        get: function (k, d) {
+        get(k, d) {
             try {
                 return JSON.parse(localStorage.getItem(k)) ?? d;
-            } catch (e) {
+            } catch {
                 return d;
             }
         },
-        set: function (k, v) {
+        set(k, v) {
             localStorage.setItem(k, JSON.stringify(v));
         },
     };
 
-    /* ========= Utils ========= */
     function toast(msg) {
-        els.status.textContent = msg || "";
-        if (msg) {
-            setTimeout(function () {
-                if (els.status.textContent === msg) els.status.textContent = "";
-            }, 2200);
-        }
-    }
-
-    function loadJSON(url) {
-        return fetch(url, { cache: "no-cache" }).then(function (r) {
-            if (!r.ok) throw new Error("load: " + url);
-            return r.json();
-        });
+        window.TRStatus && TRStatus.set(msg);
     }
 
     function loadScriptOnce(url) {
-        return new Promise(function (res, rej) {
-            var exists = Array.prototype.some.call(document.scripts, function (s) {
-                return s.src && (s.src === url || s.src.endsWith(url));
-            });
+        return new Promise((res, rej) => {
+            const exists = Array.from(document.scripts).some((s) => s.src && (s.src === url || s.src.endsWith(url)));
             if (exists) return res();
-            var s = document.createElement("script");
+            const s = document.createElement("script");
             s.src = url;
             s.defer = true;
-            s.onload = function () {
-                res();
-            };
-            s.onerror = function () {
-                rej(new Error("script: " + url));
-            };
+            s.onload = () => res();
+            s.onerror = () => rej(new Error("script: " + url));
             document.head.appendChild(s);
         });
     }
 
-    /* ========= Prism Language Loader (NEW) ========= */
-    async function ensurePrismLanguage(lang) {
-        if (!lang || lang === "none" || lang === "auto") return;
-        configureAutoloader();
-
-        // Sudah ada?
-        if (window.Prism && Prism.languages && Prism.languages[lang]) return;
-
-        // Programmatic load jika tersedia
-        const al = Prism?.plugins?.autoloader;
-        const loadFn = al && typeof al.loadLanguages === "function" ? al.loadLanguages : null;
-
-        if (loadFn) {
-            await new Promise((resolve) => {
-                try {
-                    loadFn.call(al, [lang], resolve);
-                    // Guard timeout bila callback tidak terpanggil
-                    setTimeout(resolve, 1000);
-                } catch {
-                    resolve();
-                }
-            });
-        } else {
-            // Trigger autoloader via dummy highlight + polling singkat
-            const dummy = document.createElement("code");
-            dummy.className = "language-" + lang;
-            dummy.textContent = "";
-            document.body.appendChild(dummy);
-            try {
-                Prism.highlightElement(dummy);
-            } catch {}
-            document.body.removeChild(dummy);
-
-            await new Promise((resolve) => {
-                const t0 = performance.now();
-                const iv = setInterval(() => {
-                    if (Prism.languages[lang] || performance.now() - t0 > 1000) {
-                        clearInterval(iv);
-                        resolve();
-                    }
-                }, 40);
-            });
-        }
-    }
-
-    /* ========= I18N ========= */
-    var i18n = {
-        t: function (k) {
-            return k;
-        },
-    };
-
-    function setUiLang(lang) {
-        return loadJSON("/assets/i18n/" + lang + ".json")
-            .catch(function () {
-                return {};
-            })
-            .then(function (dict) {
-                // override label sesuai permintaan
-                if (!dict.copyRich) dict.copyRich = "Copy Word";
-                dict.exportPNG = "PNG";
-                dict.exportPDF = "PDF";
-                i18n = {
-                    t: function (k) {
-                        return dict[k] || k;
-                    },
-                };
-                document.querySelectorAll("[data-i18n]").forEach(function (el) {
-                    var key = el.getAttribute("data-i18n");
-                    el.textContent = i18n.t(key);
-                });
-                if (els.input) {
-                    var ph = i18n.t("placeholder");
-                    if (ph) els.input.placeholder = ph;
-                }
-                if (els.uiLangBadge) els.uiLangBadge.textContent = lang.toUpperCase();
-                store.set("uiLang", lang);
-            });
-    }
-
-    /* ========= Theme ========= */
-    function setTheme(mode) {
-        var light = mode === "light";
-        document.documentElement.classList.toggle("light", light);
-        if (els.prismTheme) els.prismTheme.href = light ? THEMES.light : THEMES.dark;
-        store.set("theme", mode);
-    }
-    function toggleTheme() {
-        var next = store.get("theme", "dark") === "dark" ? "light" : "dark";
-        setTheme(next);
-    }
-
-    /* ========= Prism Autoloader ========= */
+    /* ===== Prism autoloader ===== */
     function configureAutoloader() {
         if (window.Prism && Prism.plugins && Prism.plugins.autoloader) {
             Prism.plugins.autoloader.languages_path = COMPONENTS_PATH;
@@ -192,18 +67,43 @@
         }
     }
 
-    /* ========= Languages & State ========= */
-    var languages = [];
-    var selectedLang = "auto"; // 'auto' | explicit prism id
-    var detectedLang = "javascript";
-    var lastCodeHash = 0;
-
-    function currentLang() {
-        return selectedLang === "auto" ? detectedLang : selectedLang;
-    }
+    /* ===== Code languages list ===== */
+    const LANGS = [
+        { prism: "javascript", label: "JavaScript" },
+        { prism: "typescript", label: "TypeScript" },
+        { prism: "python", label: "Python" },
+        { prism: "go", label: "Go" },
+        { prism: "java", label: "Java" },
+        { prism: "php", label: "PHP" },
+        { prism: "c", label: "C" },
+        { prism: "cpp", label: "C++" },
+        { prism: "csharp", label: "C#" },
+        { prism: "rust", label: "Rust" },
+        { prism: "bash", label: "Bash" },
+        { prism: "sql", label: "SQL" },
+        { prism: "json", label: "JSON" },
+        { prism: "yaml", label: "YAML" },
+        { prism: "markup", label: "HTML" },
+        { prism: "css", label: "CSS" },
+        { prism: "jsx", label: "JSX" },
+        { prism: "tsx", label: "TSX" },
+        { prism: "kotlin", label: "Kotlin" },
+        { prism: "swift", label: "Swift" },
+        { prism: "powershell", label: "PowerShell" },
+        { prism: "graphql", label: "GraphQL" },
+        { prism: "docker", label: "Dockerfile" },
+        { prism: "nginx", label: "Nginx conf" },
+        { prism: "apacheconf", label: "Apache conf" },
+        { prism: "protobuf", label: "Protobuf" },
+        { prism: "ini", label: "INI" },
+        { prism: "toml", label: "TOML" },
+        { prism: "markdown", label: "Markdown" },
+        { prism: "scss", label: "SCSS" },
+        { prism: "less", label: "LESS" },
+    ];
 
     function badgeFor(lang) {
-        var map = {
+        const map = {
             javascript: "JS",
             typescript: "TS",
             python: "PY",
@@ -235,116 +135,59 @@
             markdown: "MD",
             scss: "SCSS",
             less: "LESS",
-            ruby: "RB",
         };
         return map[lang] || (lang ? String(lang).toUpperCase().slice(0, 4) : "AUTO");
     }
 
-    function updateBadge() {
-        if (els.langBadge) els.langBadge.textContent = badgeFor(currentLang());
-    }
-
-    var FAVORITES = (function () {
-        var arr = [
-            "javascript",
-            "typescript",
-            "python",
-            "go",
-            "java",
-            "php",
-            "c",
-            "cpp",
-            "csharp",
-            "rust",
-            "bash",
-            "sql",
-            "json",
-            "yaml",
-            "markup",
-            "css",
-            "jsx",
-            "tsx",
-        ];
-        var s = {};
-        arr.forEach(function (x) {
-            s[x] = true;
-        });
-        return s;
-    })();
+    /* ===== Popover ===== */
+    const LS_CODE_LANG = "trhc.codeLang"; // 'auto' or prism id
+    let selectedLang = store.get(LS_CODE_LANG, "auto");
 
     function renderLangList(filter) {
-        var q = (filter || "").trim().toLowerCase();
-        var items = (languages || []).filter(function (x) {
-            var hay = (x.label + " " + x.prism + " " + x.id).toLowerCase();
-            return !q || hay.indexOf(q) !== -1;
+        const q = (filter || "").trim().toLowerCase();
+        const items = LANGS.filter((x) => !q || (x.label + " " + x.prism).toLowerCase().includes(q));
+
+        let html = `<button type="button" class="lang-item" role="option" tabindex="0" data-lang="auto" ${
+            selectedLang === "auto" ? 'data-active="true"' : ""
+        }>
+      <span class="lang-badge">AUTO</span><span class="lang-label">Auto (Detect)</span></button>`;
+
+        items.forEach((x) => {
+            const active = selectedLang !== "auto" && x.prism === selectedLang ? 'data-active="true"' : "";
+            html += `<button type="button" class="lang-item" role="option" tabindex="0" data-lang="${
+                x.prism
+            }" ${active}>
+                <span class="lang-badge">${badgeFor(x.prism)}</span>
+                <span class="lang-label">${x.label}</span></button>`;
         });
 
-        var autoActive = selectedLang === "auto" ? ' data-active="true"' : "";
-        var html = "";
-        html +=
-            '<button type="button" class="lang-item" role="option" tabindex="0" data-lang="auto"' + autoActive + ">";
-        html += '<span class="lang-badge">AUTO</span><span class="lang-label">Auto (Detect)</span></button>';
-
-        var favs = [],
-            rest = [];
-        items.forEach(function (x) {
-            if (FAVORITES[x.prism]) favs.push(x);
-            else rest.push(x);
-        });
-
-        function btnHtml(x) {
-            var active = selectedLang !== "auto" && x.prism === selectedLang ? ' data-active="true"' : "";
-            var s =
-                '<button type="button" class="lang-item" role="option" tabindex="0" data-lang="' +
-                x.prism +
-                '"' +
-                active +
-                ">";
-            s += '<span class="lang-badge">' + badgeFor(x.prism) + "</span>";
-            s += '<span class="lang-label">' + x.label + "</span></button>";
-            return s;
-        }
-
-        favs.forEach(function (x) {
-            html += btnHtml(x);
-        });
-        rest.forEach(function (x) {
-            html += btnHtml(x);
-        });
-
-        if (els.langList) els.langList.innerHTML = html;
+        els.langList.innerHTML = html;
     }
 
-    /* ========= Popover ========= */
-    var outsideHandler = null;
-
+    let outsideHandler = null;
     function openLangPopover() {
         renderLangList("");
-        if (els.langPopover) els.langPopover.hidden = false;
-        if (els.btnLangMenu) els.btnLangMenu.setAttribute("aria-expanded", "true");
-        if (els.langSearch) {
-            els.langSearch.value = "";
-            els.langSearch.focus();
-        }
-        outsideHandler = function (e) {
-            var inside = e.target.closest ? e.target.closest("#langPopover") : null;
+        els.langPopover.hidden = false;
+        els.btnLangMenu.setAttribute("aria-expanded", "true");
+        els.langSearch.value = "";
+        els.langSearch.focus();
+        outsideHandler = (e) => {
+            const inside = e.target.closest && e.target.closest("#langPopover");
             if (!inside && e.target !== els.btnLangMenu) closeLangPopover();
         };
         document.addEventListener("pointerdown", outsideHandler);
     }
-
     function closeLangPopover() {
-        if (els.langPopover) els.langPopover.hidden = true;
-        if (els.btnLangMenu) els.btnLangMenu.setAttribute("aria-expanded", "false");
+        els.langPopover.hidden = true;
+        els.btnLangMenu.setAttribute("aria-expanded", "false");
         if (outsideHandler) {
             document.removeEventListener("pointerdown", outsideHandler);
             outsideHandler = null;
         }
     }
 
-    /* ========= Universal Auto-Detector ========= */
-
-    var fenceAlias = {
+    /* ===== Autodetect ===== */
+    const fenceAlias = {
         html: "markup",
         xml: "markup",
         shell: "bash",
@@ -368,7 +211,7 @@
         objc: "objectivec",
     };
 
-    var extMap = {
+    const extMap = {
         js: "javascript",
         mjs: "javascript",
         cjs: "javascript",
@@ -412,7 +255,7 @@
         conf: "apacheconf",
     };
 
-    var signatures = [
+    const signatures = [
         { lang: "php", re: /<\?php|->|::/ },
         { lang: "python", re: /^\s*def\s+|^\s*class\s+|:\s*$/m },
         { lang: "go", re: /\bpackage\s+main\b|\bfunc\s+main\(/ },
@@ -425,18 +268,9 @@
         { lang: "sql", re: /\bSELECT\b|\bINSERT\b|\bUPDATE\b|\bCREATE\s+TABLE\b/i },
         { lang: "markup", re: /<\/?[a-z!][\s\S]*>/i },
         { lang: "css", re: /{\s*[^}]*:\s*[^}]*;?\s*}/ },
-        { lang: "powershell", re: /^\s*(Get-|Set-|New-|Write-)[A-Za-z]+/m },
-        { lang: "graphql", re: /\b(query|mutation|schema|type)\b\s*{?/ },
-        { lang: "docker", re: /^\s*(FROM|RUN|COPY|CMD|ENTRYPOINT|EXPOSE)\b/m },
-        { lang: "nginx", re: /\bserver\s*\{|\blocation\s+\/|\blisten\s+\d+/ },
-        { lang: "apacheconf", re: /^<Directory\b|^\s*Require\s+/m },
-        { lang: "protobuf", re: /^\s*syntax\s*=\s*"proto[23]";/m },
-        { lang: "kotlin", re: /\bfun\s+\w+\(|\bdata\s+class\b/ },
-        { lang: "swift", re: /\bimport\s+\w+|\bfunc\s+\w+\(/ },
-        { lang: "ruby", re: /\bdef\s+\w+|end\b|puts\s+/ },
     ];
 
-    var candidates = {
+    const candidates = {
         javascript: ["function", "const ", "let ", "=>", "console.", "document.", ";"],
         typescript: ["interface ", "type ", "implements", ": ", " as ", "enum ", "readonly "],
         python: ["def ", "import ", " from ", " self", "elif", "None", ":\n", "print("],
@@ -447,86 +281,59 @@
         c: ["#include", "printf", "scanf", "->", "sizeof", "typedef"],
         rust: ["fn ", "let mut", "println!", "::", "use ", "impl "],
         php: ["<?php", " echo ", "->", "$", " function "],
-        ruby: ["def ", " end", " puts", " class ", " module "],
-        swift: ["import ", " let ", " var ", " func ", "print("],
-        kotlin: ["fun ", " val ", " var ", " data class ", "println("],
         bash: ["#!/", " echo ", " fi", " done", " for ", " do ", " then ", "${", '"$'],
         sql: ["SELECT ", "INSERT ", "UPDATE ", "CREATE ", "FROM ", " WHERE "],
         json: ["{", "}", '":"', '": '],
         yaml: [":\n", "- ", "---\n"],
         markdown: ["# ", "```", "- ", "* ", "> "],
         css: ["{", "}", ";", "@media", "@import"],
-        scss: ["@mixin", "@include", "$", "&", "#{"],
-        less: ["@", " .", " {", "}"],
-        graphql: ["query ", "mutation ", "schema ", "type "],
-        docker: ["FROM ", "RUN ", "COPY ", "CMD ", "ENTRYPOINT", "EXPOSE "],
-        nginx: ["server {", "location ", "listen "],
-        apacheconf: ["<Directory", "AllowOverride", "Require "],
-        powershell: ["Write-Host", "Get-", "Set-", "New-", "$env:"],
-        protobuf: ['syntax = "proto', "message ", "repeated ", "enum "],
-        ini: ["[", "]", "="],
-        toml: ["[", "]", "=", '"'],
-        xml: ["<?xml", "</", "<"],
     };
 
     function scoreLang(code, lang) {
-        var list = candidates[lang] || [];
-        var s = 0;
-        for (var i = 0; i < list.length; i++) {
-            var kw = list[i];
-            var esc = kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-            var re = new RegExp(esc, "gi");
-            var m = code.match(re);
+        const list = candidates[lang] || [];
+        let s = 0;
+        for (let i = 0; i < list.length; i++) {
+            const kw = list[i].replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            const re = new RegExp(kw, "gi");
+            const m = code.match(re);
             if (m) s += m.length;
         }
         return s;
     }
 
     function detectLanguage(raw, filename) {
-        var code = (raw || "").slice(0, 8000);
-        var name = filename || "";
+        const code = (raw || "").slice(0, 8000);
+        const name = filename || "";
 
-        // code fence anywhere: ```lang
-        var mFence = code.match(/```([a-z0-9_#+.-]+)\s*[\r\n]/i);
-        if (mFence) {
-            var hint = mFence[1].toLowerCase();
-            var mapped = fenceAlias[hint] || hint;
-            return mapped;
+        const mf = code.match(/```([a-z0-9_#+.-]+)\s*[\r\n]/i);
+        if (mf) {
+            const hint = mf[1].toLowerCase();
+            return fenceAlias[hint] || hint;
         }
 
-        // ext by filename
-        var ext = "";
-        if (name.indexOf(".") !== -1) {
-            var parts = name.split(".");
-            ext = (parts[parts.length - 1] || "").toLowerCase();
+        if (name.includes(".")) {
+            const ext = name.split(".").pop().toLowerCase();
+            if (extMap[ext]) return extMap[ext];
         }
-        if (extMap[ext]) return extMap[ext];
 
-        // shebang
         if (/^#!.*\bpython\b/m.test(code)) return "python";
         if (/^#!.*\bnode\b/m.test(code)) return "javascript";
         if (/^#!.*\b(sh|bash|zsh)\b/m.test(code)) return "bash";
-        if (/^#!.*\bpwsh\b/m.test(code)) return "powershell";
 
-        // signatures
-        for (var i = 0; i < signatures.length; i++) {
-            if (signatures[i].re.test(code)) return signatures[i].lang;
-        }
+        for (let i = 0; i < signatures.length; i++) if (signatures[i].re.test(code)) return signatures[i].lang;
 
-        // JSON loose
         if (/^\s*[\{\[]/.test(code) && !/\b(function|class|import|export|def|package)\b/.test(code)) {
-            var colons = (code.match(/:\s*/g) || []).length;
-            var semis = (code.match(/;/g) || []).length;
+            const colons = (code.match(/:\s*/g) || []).length;
+            const semis = (code.match(/;/g) || []).length;
             if (colons >= 2 && semis < 3) return "json";
         }
 
-        // keyword scoring
-        var best = "javascript";
-        var bestScore = -1;
-        var langs = Object.keys(candidates);
-        for (var j = 0; j < langs.length; j++) {
-            var L = langs[j];
-            var s = scoreLang(code, L);
+        let best = "javascript",
+            bestScore = -1;
+        const langs = Object.keys(candidates);
+        for (let j = 0; j < langs.length; j++) {
+            const L = langs[j];
+            const s = scoreLang(code, L);
             if (s > bestScore) {
                 bestScore = s;
                 best = L;
@@ -535,97 +342,58 @@
         return best;
     }
 
-    function bestTwoScores(code) {
-        var top = { lang: null, score: -1 };
-        var second = { lang: null, score: -1 };
-        var langs = Object.keys(candidates);
-        for (var i = 0; i < langs.length; i++) {
-            var L = langs[i];
-            var s = scoreLang(code, L);
-            if (s > top.score) {
-                second = top;
-                top = { lang: L, score: s };
-            } else if (s > second.score) {
-                second = { lang: L, score: s };
-            }
-        }
-        return { top: top, second: second };
+    /* ===== Render ===== */
+    let detectedLang = "javascript";
+    function updateBadge(lang) {
+        els.langBadge.textContent = badgeFor(lang || "javascript");
     }
 
-    /* ========= Rendering ========= */
-    function updateCodeElement(lang, code) {
-        var eff = lang === "auto" ? detectedLang : lang;
-        els.code.className = "language-" + eff;
-        var ln = els.pre.classList.contains("line-numbers");
-        var wp = els.pre.classList.contains("wrap");
+    function setPreCodeLang(effective) {
+        els.code.className = "language-" + effective;
+        const ln = els.pre.classList.contains("line-numbers");
+        const wp = els.pre.classList.contains("wrap");
         els.pre.className = (
             "language-" +
-            eff +
+            effective +
             " " +
             (ln ? "line-numbers " : "") +
             (wp ? "wrap " : "") +
             "match-braces"
         ).trim();
-        els.code.textContent = code;
-        updateBadge();
-        if (els.langPopover && !els.langPopover.hidden) renderLangList(els.langSearch ? els.langSearch.value : "");
-        store.set("codeLang", selectedLang);
     }
 
     function prismRender() {
         configureAutoloader();
         try {
-            if (window.Prism) Prism.highlightElement(els.code);
-        } catch (e) {
-            /* ignore */
-        }
-    }
-
-    function fastHash(s) {
-        var h = 0;
-        for (var i = 0; i < s.length; i++) {
-            h = (h * 31 + s.charCodeAt(i)) | 0;
-        }
-        return h;
+            Prism && Prism.highlightElement(els.code);
+        } catch {}
     }
 
     function render(filename) {
-        var code = els.input.value || "";
-        var hash = fastHash(code);
-        var fname = filename || "";
+        const code = els.input.value || "";
+        const fname = filename || "";
 
-        if (hash !== lastCodeHash) {
-            var autoCandidate = detectLanguage(code, fname);
-            if (selectedLang !== "auto") {
-                var two = bestTwoScores(code);
-                var curScore = scoreLang(code, selectedLang);
-                if (two.top.lang && two.top.score - curScore >= AUTO_OVERRIDE_GAP) {
-                    selectedLang = "auto";
-                    toast("Auto: " + autoCandidate.toUpperCase());
-                }
-            }
-            detectedLang = autoCandidate;
-            lastCodeHash = hash;
-        }
-        updateCodeElement(selectedLang, code);
+        if (selectedLang === "auto") detectedLang = detectLanguage(code, fname);
+        const effective = selectedLang === "auto" ? detectedLang : selectedLang;
+
+        setPreCodeLang(effective);
+        els.code.textContent = code;
+        updateBadge(effective);
         prismRender();
     }
-
     function renderImmediate(filename) {
-        requestAnimationFrame(function () {
-            render(filename || "");
-        });
+        requestAnimationFrame(() => render(filename || ""));
     }
 
-    /* ========= Copy / Export / Print ========= */
+    /* ===== Copy / Export ===== */
     function inlineStyles(root) {
-        var walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, null);
-        var allow = { SPAN: true, CODE: true, PRE: true };
-        var node;
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, null);
+        const allow = { SPAN: true, CODE: true, PRE: true };
+        let node;
         while ((node = walker.nextNode())) {
-            var el = node;
+            const el = node;
             if (!allow[el.tagName]) continue;
-            var cs = getComputedStyle(el);
+            const cs = getComputedStyle(el);
             el.style.color = cs.color;
             el.style.backgroundColor = cs.backgroundColor;
             el.style.fontFamily = cs.fontFamily;
@@ -639,83 +407,75 @@
     }
 
     function copyPlain() {
-        return navigator.clipboard.writeText(els.code.textContent || "").then(function () {
-            toast(i18n.t("copied"));
+        return navigator.clipboard.writeText(els.code.textContent || "").then(() => {
+            const msg = (window.TRI18N && TRI18N.t("copied")) || "Copied";
+            toast(msg);
         });
     }
-
     function copyRich() {
-        var tmp = els.pre.cloneNode(true);
-        var gut = tmp.querySelector(".line-numbers-rows");
+        const tmp = els.pre.cloneNode(true);
+        const gut = tmp.querySelector(".line-numbers-rows");
         if (gut) gut.remove();
         tmp.classList.remove("line-numbers");
         inlineStyles(tmp);
-        var dt = new DataTransfer();
+        const dt = new DataTransfer();
         dt.setData("text/html", tmp.outerHTML);
         dt.setData("text/plain", els.code.textContent || "");
-        return navigator.clipboard.write(dt).then(function () {
-            toast("Copied for Word");
-        });
+        return navigator.clipboard.write(dt).then(() => toast("Copied for Word"));
     }
 
     function exportPNG() {
         return loadScriptOnce(VENDOR_HTML2IMG)
-            .then(function () {
-                var toBlob = window.htmlToImage && window.htmlToImage.toBlob ? window.htmlToImage.toBlob : null;
-                if (!toBlob) throw new Error("html-to-image not found");
+            .then(() => {
+                const toBlob = window.htmlToImage?.toBlob;
+                if (!toBlob) throw new Error("html-to-image missing");
                 return toBlob(els.pre, { pixelRatio: 2 });
             })
-            .then(function (blob) {
-                var url = URL.createObjectURL(blob);
-                var a = document.createElement("a");
+            .then((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
                 a.href = url;
-                a.download = "trhc-" + currentLang() + ".png";
+                a.download = "trhc-" + (selectedLang === "auto" ? detectedLang : selectedLang) + ".png";
                 a.click();
                 URL.revokeObjectURL(url);
             })
-            .catch(function () {
-                toast("PNG gagal");
-            });
+            .catch(() => toast("PNG failed"));
     }
 
     function exportPDF() {
         return loadScriptOnce(VENDOR_HTML2IMG)
-            .then(function () {
-                return loadScriptOnce(VENDOR_JSPDF);
-            })
-            .then(function () {
-                var toPng = window.htmlToImage && window.htmlToImage.toPng ? window.htmlToImage.toPng : null;
-                var jsPDF = window.jspdf && window.jspdf.jsPDF ? window.jspdf.jsPDF : null;
-                if (!toPng || !jsPDF) throw new Error("vendor not ready");
-                return toPng(els.pre, { pixelRatio: 2 }).then(function (dataUrl) {
-                    var pdf = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
-                    var pageW = pdf.internal.pageSize.getWidth();
-                    var pageH = pdf.internal.pageSize.getHeight();
-                    var m = 24;
-                    var maxW = pageW - m * 2;
-                    var maxH = pageH - m * 2;
-                    var img = new Image();
-                    return new Promise(function (ok) {
+            .then(() => loadScriptOnce(VENDOR_JSPDF))
+            .then(() => {
+                const toPng = window.htmlToImage?.toPng;
+                const jsPDF = window.jspdf?.jsPDF;
+                if (!toPng || !jsPDF) throw new Error("vendor missing");
+                return toPng(els.pre, { pixelRatio: 2 }).then((dataUrl) => {
+                    const pdf = new jsPDF({ orientation: "p", unit: "pt", format: "a4" });
+                    const pageW = pdf.internal.pageSize.getWidth();
+                    const pageH = pdf.internal.pageSize.getHeight();
+                    const m = 24,
+                        maxW = pageW - m * 2,
+                        maxH = pageH - m * 2;
+                    const img = new Image();
+                    return new Promise((ok) => {
                         img.onload = function () {
-                            var w = img.naturalWidth;
-                            var h = img.naturalHeight;
-                            var s = Math.min(maxW / w, maxH / h, 1);
+                            let w = img.naturalWidth,
+                                h = img.naturalHeight;
+                            const s = Math.min(maxW / w, maxH / h, 1);
                             w *= s;
                             h *= s;
                             pdf.addImage(dataUrl, "PNG", (pageW - w) / 2, (pageH - h) / 2, w, h);
-                            pdf.save("trhc-" + currentLang() + ".pdf");
+                            pdf.save("trhc-" + (selectedLang === "auto" ? detectedLang : selectedLang) + ".pdf");
                             ok();
                         };
                         img.src = dataUrl;
                     });
                 });
             })
-            .catch(function () {
-                toast("PDF gagal");
-            });
+            .catch(() => toast("PDF failed"));
     }
 
-    /* ========= Init ========= */
+    /* ===== Toggles / State ===== */
     function setLineNumbers(on) {
         els.pre.classList.toggle("line-numbers", !!on);
         store.set("lineNumbers", !!on);
@@ -725,170 +485,122 @@
         store.set("wrapLines", !!on);
     }
 
-    function bindEvents() {
-        // Theme / UI lang
-        if (els.btnTheme)
-            els.btnTheme.addEventListener("click", function () {
-                toggleTheme();
-                renderImmediate("");
-            });
-        if (els.btnUiLang)
-            els.btnUiLang.addEventListener("click", function () {
-                var next = store.get("uiLang", "id") === "id" ? "en" : "id";
-                setUiLang(next);
-            });
+    function restoreState() {
+        setLineNumbers(store.get("lineNumbers", true));
+        setWrap(store.get("wrapLines", true));
+        if (els.input) els.input.value = store.get("content", "");
+        selectedLang = store.get(LS_CODE_LANG, "auto");
+        updateBadge(selectedLang === "auto" ? "javascript" : selectedLang);
+    }
 
-        // Popover language
+    /* ===== Bindings ===== */
+    function bind() {
+        // Popover
         if (els.btnLangMenu)
-            els.btnLangMenu.addEventListener("click", function () {
-                if (els.langPopover && els.langPopover.hidden) openLangPopover();
-                else closeLangPopover();
-            });
+            els.btnLangMenu.addEventListener("click", () =>
+                els.langPopover.hidden ? openLangPopover() : closeLangPopover()
+            );
         if (els.btnLangClose) els.btnLangClose.addEventListener("click", closeLangPopover);
-        if (els.langSearch)
-            els.langSearch.addEventListener("input", function (e) {
-                renderLangList(e.target.value);
-            });
+        if (els.langSearch) els.langSearch.addEventListener("input", (e) => renderLangList(e.target.value));
         if (els.langList)
-            els.langList.addEventListener("click", function (e) {
-                var btn = e.target.closest ? e.target.closest("button[data-lang]") : null;
+            els.langList.addEventListener("click", (e) => {
+                const btn = e.target.closest && e.target.closest("button[data-lang]");
                 if (!btn) return;
                 selectedLang = btn.getAttribute("data-lang");
-                updateBadge();
+                store.set(LS_CODE_LANG, selectedLang);
                 closeLangPopover();
                 renderImmediate("");
             });
 
-        // Switches
+        // switches
         if (els.btnLineNumbers)
-            els.btnLineNumbers.addEventListener("click", function () {
-                var on = !(els.btnLineNumbers.getAttribute("aria-checked") === "true");
+            els.btnLineNumbers.addEventListener("click", () => {
+                const on = !(els.btnLineNumbers.getAttribute("aria-checked") === "true");
                 els.btnLineNumbers.setAttribute("aria-checked", String(on));
                 setLineNumbers(on);
                 renderImmediate("");
             });
         if (els.btnWrap)
-            els.btnWrap.addEventListener("click", function () {
-                var on = !(els.btnWrap.getAttribute("aria-checked") === "true");
+            els.btnWrap.addEventListener("click", () => {
+                const on = !(els.btnWrap.getAttribute("aria-checked") === "true");
                 els.btnWrap.setAttribute("aria-checked", String(on));
                 setWrap(on);
                 renderImmediate("");
             });
 
-        // Text input → render (autodetect)
+        // input
         if (els.input) {
-            els.input.addEventListener("input", function () {
+            els.input.addEventListener("input", () => {
                 store.set("content", els.input.value);
                 renderImmediate("");
             });
-            els.input.addEventListener("compositionend", function () {
-                renderImmediate("");
-            });
-            els.input.addEventListener("keyup", function () {
-                renderImmediate("");
-            });
-            els.input.addEventListener("paste", function () {
-                setTimeout(function () {
-                    renderImmediate("");
-                }, 0);
-            });
+            els.input.addEventListener("compositionend", () => renderImmediate(""));
+            els.input.addEventListener("keyup", () => renderImmediate(""));
+            els.input.addEventListener("paste", () => setTimeout(() => renderImmediate(""), 0));
         }
 
-        // Paste/Clear buttons
+        // actions
         if (els.btnPaste)
-            els.btnPaste.addEventListener("click", function () {
+            els.btnPaste.addEventListener("click", () => {
                 navigator.clipboard
                     .readText()
-                    .then(function (txt) {
+                    .then((txt) => {
                         els.input.value = txt;
                         store.set("content", txt);
                         renderImmediate("");
                     })
-                    .catch(function () {
-                        toast("Clipboard tidak diizinkan");
-                    });
+                    .catch(() => toast("Clipboard not allowed"));
             });
         if (els.btnClear)
-            els.btnClear.addEventListener("click", function () {
+            els.btnClear.addEventListener("click", () => {
                 els.input.value = "";
                 store.set("content", "");
                 renderImmediate("");
             });
-
-        // Copy / PNG / PDF / Print
         if (els.btnCopy) els.btnCopy.addEventListener("click", copyPlain);
         if (els.btnCopyRich) els.btnCopyRich.addEventListener("click", copyRich);
         if (els.btnExportPNG) els.btnExportPNG.addEventListener("click", exportPNG);
         if (els.btnExportPDF) els.btnExportPDF.addEventListener("click", exportPDF);
-        if (els.btnPrint)
-            els.btnPrint.addEventListener("click", function () {
-                window.print();
-            });
+        if (els.btnPrint) els.btnPrint.addEventListener("click", () => window.print());
 
-        // Drag & Drop
+        // drag & drop
         if (els.dropZone) {
-            ["dragenter", "dragover"].forEach(function (ev) {
-                els.dropZone.addEventListener(ev, function (e) {
+            ["dragenter", "dragover"].forEach((ev) =>
+                els.dropZone.addEventListener(ev, (e) => {
                     e.preventDefault();
                     els.dropZone.classList.add("drag");
-                });
-            });
-            ["dragleave", "drop"].forEach(function (ev) {
-                els.dropZone.addEventListener(ev, function (e) {
+                })
+            );
+            ["dragleave", "drop"].forEach((ev) =>
+                els.dropZone.addEventListener(ev, (e) => {
                     e.preventDefault();
                     els.dropZone.classList.remove("drag");
-                });
-            });
-            els.dropZone.addEventListener("drop", function (e) {
-                var files = e.dataTransfer && e.dataTransfer.files ? e.dataTransfer.files : null;
-                var f = files && files[0] ? files[0] : null;
+                })
+            );
+            els.dropZone.addEventListener("drop", (e) => {
+                const f = e.dataTransfer?.files?.[0];
                 if (!f) return;
-                f.text().then(function (text) {
+                f.text().then((text) => {
                     els.input.value = text;
                     store.set("content", text);
                     renderImmediate(f.name);
                 });
             });
         }
-
-        // SW
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("/sw.js").catch(function () {
-                /* ignore */
-            });
-        }
-    }
-
-    function restoreState() {
-        setTheme(store.get("theme", "dark"));
-        setLineNumbers(store.get("lineNumbers", true));
-        setWrap(store.get("wrapLines", true));
-        if (els.input) els.input.value = store.get("content", "");
-        selectedLang = store.get("codeLang", "auto");
-        updateBadge();
     }
 
     function main() {
-        setUiLang(store.get("uiLang", "id"))
-            .then(function () {
-                return loadJSON("/assets/json/languages.json").catch(function () {
-                    return { languages: [] };
-                });
-            })
-            .then(function (cfg) {
-                languages = cfg.languages || [];
-                restoreState();
-                if (els.input && !els.input.value) {
-                    els.input.value = 'console.log("Hello TRHC!");';
-                    store.set("content", els.input.value);
-                }
-                configureAutoloader();
-                renderImmediate("");
-            });
+        configureAutoloader();
+        restoreState();
+        if (els.input && !els.input.value) {
+            els.input.value = 'console.log("Hello TRHC!");';
+            store.set("content", els.input.value);
+        }
+        renderImmediate("");
     }
 
-    /* ========= Boot ========= */
-    document.documentElement.classList.remove("no-js");
-    bindEvents();
-    main();
+    document.addEventListener("DOMContentLoaded", () => {
+        bind();
+        main();
+    });
 })();

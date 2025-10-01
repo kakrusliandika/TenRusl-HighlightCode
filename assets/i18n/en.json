@@ -9,12 +9,15 @@
     "paste": "Paste",
     "clear": "Clear",
     "copy": "Copy",
-    "copyRich": "Copy (Word/Docs)",
-    "exportPNG": "Export PNG",
-    "exportPDF": "Export PDF",
+    "copyRich": "Copy Word",
+    "exportPNG": "PNG",
+    "exportPDF": "PDF",
     "print": "Print",
     "dropHint": "Drag & drop source files (safe, offline)",
     "placeholder": "// Paste your code here or drop a file…",
     "copied": "Copied.",
-    "copiedRich": "Copied with colors (Word/Docs)."
+    "copiedRich": "Copied with colors (Word/Docs).",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies"
 }

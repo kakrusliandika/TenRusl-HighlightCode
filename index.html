@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js" dir="ltr">
-    <!-- Tambah di <html>: <html lang="id" dir="ltr"> -->
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title>TenRusl Highlight Code — Copy rapi ke Word/Docs, Ekspor PNG/PDF</title>
+        <title>TenRusl Highlight Code — Copy neatly to Word/Docs, Export PNG/PDF</title>
         <meta
             name="description"
-            content="Highlighter kode multi-bahasa dengan copy ke Word/Docs tanpa rusak format. Ekspor PNG/PDF. PWA. Super cepat & aman untuk developer."
+            content="Multi-language code highlighter with clean copy to Word/Docs. Export PNG/PDF. PWA. Fast & private for developers."
         />
 
         <!-- Indexing directives -->
@@ -20,35 +19,39 @@
         <meta name="application-name" content="TenRusl Highlight Code" />
         <meta name="author" content="Andika Rusli - TenRusl" />
         <meta name="referrer" content="strict-origin-when-cross-origin" />
-        <!-- Google Search Console verification -->
+        <meta name="trhc-country" content="ID" />
+
+        <!-- Verification (sesuaikan jika perlu) -->
         <meta name="google-site-verification" content="FClG-yRowubCICDyQFjDm65cnX4tk4WYcmDA0EXmRQQ" />
         <meta name="google-adsense-account" content="ca-pub-3735882384148563" />
-        <!-- Bing -->
         <meta name="msvalidate.01" content="59B80926C96C0F3D17FA20A9056A5F94" />
-        <!-- Yandex -->
         <meta name="yandex-verification" content="67afd437ac78cfe0" />
-        <!-- Pinterest -->
         <meta name="p:domain_verify" content="026616ba547c1f8d0ebc8b5c9dcf4ebd" />
 
-        <!-- Canonical & Hreflang (ganti URL sesuai domainmu) -->
+        <!-- Canonical & Hreflang -->
         <link rel="canonical" href="https://tenrusl-highlightcode.pages.dev/" />
         <link rel="alternate" href="https://tenrusl-highlightcode.pages.dev/" hreflang="en" />
         <link rel="alternate" href="https://tenrusl-highlightcode.pages.dev/id/" hreflang="id-ID" />
         <link rel="alternate" href="https://tenrusl-highlightcode.pages.dev/" hreflang="x-default" />
 
-        <!-- Icons -->
+        <!-- Icons & Manifest -->
         <link rel="icon" href="/assets/images/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials" />
 
-        <!-- Styles -->
+        <!-- Font Awesome (icons) -->
+        <link rel="stylesheet" href="/assets/plugin/fontawesome/css/all.min.css" />
+
+        <!-- Styles (split) -->
+        <link rel="stylesheet" href="/assets/css/theme.css" />
+        <link rel="stylesheet" href="/assets/css/language.css" />
+        <link rel="stylesheet" href="/assets/css/chrome.css" />
         <link rel="stylesheet" href="/assets/css/app.css" />
 
-        <!-- Prism (self-host 1.30.0) -->
+        <!-- Prism (self-host) -->
         <link id="prism-theme" rel="stylesheet" href="/assets/plugin/prismjs/package/themes/prism-okaidia.min.css" />
         <link rel="stylesheet" href="/assets/plugin/prismjs/package/plugins/line-numbers/prism-line-numbers.min.css" />
         <link rel="stylesheet" href="/assets/plugin/prismjs/package/plugins/match-braces/prism-match-braces.css" />
-
         <script defer src="/assets/plugin/prismjs/package/prism.js"></script>
         <script defer src="/assets/plugin/prismjs/package/plugins/line-numbers/prism-line-numbers.min.js"></script>
         <script defer src="/assets/plugin/prismjs/package/plugins/match-braces/prism-match-braces.min.js"></script>
@@ -60,32 +63,26 @@
         <meta property="og:title" content="TenRusl Highlight Code — Multi-Language Code Highlighter" />
         <meta
             property="og:description"
-            content="Highlighter kode multi-bahasa dengan copy ke Word/Docs tanpa rusak format. Ekspor PNG/PDF. PWA. Super cepat & aman."
+            content="Copy to Word/Docs without broken formats. Export PNG/PDF. PWA. Fast & private."
         />
         <meta property="og:url" content="https://tenrusl-highlightcode.pages.dev/" />
         <meta property="og:image" content="https://tenrusl-highlightcode.pages.dev/assets/images/icon.svg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="Tampilan TenRusl Highlight Code dengan hasil highlight rapi" />
-        <meta property="og:locale" content="id_ID" />
-        <meta property="og:locale:alternate" content="en_US" />
+        <meta property="og:image:alt" content="TenRusl Highlight Code preview" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:locale:alternate" content="id_ID" />
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="TenRusl Highlight Code — Multi-Language Code Highlighter" />
         <meta
             name="twitter:description"
-            content="Copy ke Word/Docs tanpa rusak format. Ekspor PNG/PDF. PWA. Super cepat & aman."
+            content="Copy to Word/Docs without broken formats. Export PNG/PDF. PWA. Fast & private."
         />
         <meta name="twitter:image" content="https://tenrusl-highlightcode.pages.dev/assets/images/icon.svg" />
-        <!-- <meta name="twitter:site" content="@akunmu"> -->
 
-        <!-- Apple PWA extras (opsional) -->
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <link rel="apple-touch-icon" href="/assets/images/icon.svg" />
-
-        <!-- Structured Data: WebApplication -->
+        <!-- Structured Data -->
         <script type="application/ld+json">
             {
                 "@context": "https://schema.org",
@@ -94,8 +91,8 @@
                 "url": "https://tenrusl-highlightcode.pages.dev/",
                 "applicationCategory": "DeveloperApplication",
                 "operatingSystem": "Web",
-                "inLanguage": "id",
-                "description": "Highlighter kode multi-bahasa dengan copy ke Word/Docs tanpa rusak format. Ekspor PNG/PDF. PWA. Super cepat & aman.",
+                "inLanguage": "en",
+                "description": "Multi-language code highlighter with clean copy to Word/Docs. Export PNG/PDF. PWA. Fast & private.",
                 "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
                 "creator": {
                     "@type": "Organization",
@@ -105,15 +102,13 @@
                 }
             }
         </script>
-
-        <!-- Structured Data: WebSite + (opsional) Site Search -->
         <script type="application/ld+json">
             {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
                 "url": "https://tenrusl-highlightcode.pages.dev/",
                 "name": "TenRusl Highlight Code",
-                "inLanguage": "id",
+                "inLanguage": "en",
                 "potentialAction": {
                     "@type": "SearchAction",
                     "target": "https://tenrusl-highlightcode.pages.dev/search?q={search_term_string}",
@@ -121,6 +116,8 @@
                 }
             }
         </script>
+
+        <!-- GA (example) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-BSD1MR7KQN"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
@@ -131,7 +128,6 @@
             gtag("config", "G-BSD1MR7KQN");
         </script>
 
-        <!-- UX/mobile -->
         <meta name="format-detection" content="telephone=no" />
     </head>
 
@@ -155,40 +151,24 @@
                     title="Toggle UI Language"
                     aria-label="Toggle UI Language"
                 >
-                    <!-- globe -->
-                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                        <g fill="none" stroke="currentColor" stroke-width="1.6">
-                            <circle cx="12" cy="12" r="9"></circle>
-                            <path d="M3 12h18M12 3c3 3.7 3 13.3 0 18M12 3c-3 3.7-3 13.3 0 18" />
-                        </g>
-                    </svg>
-                    <span id="uiLangBadge" class="badge-mini">ID</span>
+                    <i class="fa-solid fa-globe icon" aria-hidden="true"></i>
+                    <span id="uiLangBadge" class="badge-mini">EN</span>
                 </button>
 
                 <!-- Theme -->
-                <button id="btnTheme" class="icon-btn" type="button" title="Toggle Theme" aria-label="Toggle Theme">
-                    <!-- sun -->
-                    <svg class="icon icon-sun-real" viewBox="0 0 24 24" aria-hidden="true">
-                        <defs>
-                            <radialGradient id="gSun" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="#ffd166" />
-                                <stop offset="100%" stop-color="#f59e0b" />
-                            </radialGradient>
-                        </defs>
-                        <circle cx="12" cy="12" r="4.8" fill="url(#gSun)"></circle>
-                        <g stroke="#f59e0b" stroke-linecap="round" stroke-width="1.8">
-                            <path
-                                d="M12 2.2v2.9M12 18.9v2.9M2.2 12h2.9M18.9 12h2.9M5.2 5.2l2 2M16.8 16.8l2 2M18.8 5.2L16.8 7.2M7.2 16.8l-2 2"
-                            />
-                        </g>
-                    </svg>
-                    <!-- moon -->
-                    <svg class="icon icon-moon-real" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill="#93c5fd" d="M21 12.8A8.8 8.8 0 1 1 11.2 3a7 7 0 1 0 9.8 9.8Z" />
-                    </svg>
+                <button
+                    id="btnTheme"
+                    class="icon-btn"
+                    type="button"
+                    title="Toggle Theme"
+                    aria-label="Toggle Theme"
+                    style="position: relative"
+                >
+                    <i class="fa-solid fa-sun icon icon-sun" aria-hidden="true"></i>
+                    <i class="fa-solid fa-moon icon icon-moon" aria-hidden="true"></i>
                 </button>
 
-                <!-- Language popover trigger -->
+                <!-- Code language popover trigger -->
                 <button
                     id="btnLangMenu"
                     class="icon-btn"
@@ -198,18 +178,7 @@
                     aria-expanded="false"
                     aria-controls="langPopover"
                 >
-                    <!-- code-switch -->
-                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                        <g
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.6"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M8 7 3 12l5 5M16 7l5 5-5 5M10 21l4-18" />
-                        </g>
-                    </svg>
+                    <i class="fa-solid fa-code-compare icon" aria-hidden="true"></i>
                     <span id="langBadge" class="badge-mini">JS</span>
                 </button>
 
@@ -223,11 +192,7 @@
                     title="Toggle line numbers"
                     aria-label="Toggle line numbers"
                 >
-                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                        <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-                            <path d="M6 4v16M10 7h9M10 12h9M10 17h9" />
-                        </g>
-                    </svg>
+                    <i class="fa-solid fa-list-ol icon" aria-hidden="true"></i>
                 </button>
 
                 <!-- Wrap lines -->
@@ -240,22 +205,11 @@
                     title="Toggle wrap lines"
                     aria-label="Toggle wrap lines"
                 >
-                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                        <g
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.6"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M3 7h12a4 4 0 0 1 0 8H8" />
-                            <path d="m8 13-3 3 3 3" />
-                        </g>
-                    </svg>
+                    <i class="fa-solid fa-text-width icon" aria-hidden="true"></i>
                 </button>
             </nav>
 
-            <!-- Language popover -->
+            <!-- Code language popover -->
             <div
                 id="langPopover"
                 class="popover"
@@ -265,7 +219,7 @@
                 hidden
             >
                 <div class="popover-head">
-                    <span data-i18n="codeLang">Bahasa</span>
+                    <span data-i18n="codeLang">Language</span>
                     <button
                         id="btnLangClose"
                         class="icon-btn ghost sm"
@@ -273,11 +227,7 @@
                         title="Close"
                         aria-label="Close language menu"
                     >
-                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                            <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                                <path d="m6 6 12 12M18 6 6 18" />
-                            </g>
-                        </svg>
+                        <i class="fa-solid fa-xmark icon" aria-hidden="true"></i>
                     </button>
                 </div>
                 <div class="popover-body">
@@ -298,45 +248,14 @@
                 <div class="panel-head">
                     <h2 data-i18n="editor">Editor</h2>
                     <div class="panel-actions">
-                        <!-- Mobile = icon only (label hidden by CSS) -->
                         <button id="btnPaste" class="btn" type="button" aria-label="Paste">
-                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <g
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.6"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <!-- clipboard top -->
-                                    <path d="M10 3h4v2h-4z" />
-                                    <!-- board + sheet -->
-                                    <path d="M8 4h8a2 2 0 0 1 2 2v2h2v12H4V8h2V6a2 2 0 0 1 2-2z" />
-                                    <!-- down arrow (paste) -->
-                                    <path d="M12 10v6m0 0l-3-3m3 3l3-3" />
-                                </g>
-                            </svg>
-                            <span class="label" data-i18n="paste">Tempel</span>
+                            <i class="fa-solid fa-clipboard icon" aria-hidden="true"></i>
+                            <span class="label" data-i18n="paste">Paste</span>
                         </button>
 
                         <button id="btnClear" class="btn ghost" type="button" aria-label="Clear">
-                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <g
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.6"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <!-- eraser body -->
-                                    <path d="M15.5 4.5 21 10l-7.5 7.5H9L3.5 12 11 4.5z" />
-                                    <!-- desk line -->
-                                    <path d="M8 20h10" />
-                                    <!-- crumbs -->
-                                    <path d="M5.5 18.5l.8.8M7 17l.6.6" />
-                                </g>
-                            </svg>
-                            <span class="label" data-i18n="clear">Bersihkan</span>
+                            <i class="fa-solid fa-trash icon" aria-hidden="true"></i>
+                            <span class="label" data-i18n="clear">Clear</span>
                         </button>
                     </div>
                 </div>
@@ -344,11 +263,11 @@
                     <textarea
                         id="input"
                         spellcheck="false"
-                        placeholder="// Tempel kode Anda di sini atau seret file…"
+                        placeholder="// Paste your code here or drop files…"
                         aria-label="Source code editor"
                     ></textarea>
                     <div class="drop-hint" data-i18n="dropHint">
-                        Seret & jatuhkan file .js/.ts/.py/.go/.java/.php/.css/.html/.json/.md dll.
+                        Drop .js/.ts/.py/.go/.java/.php/.css/.html/.json/.md etc.
                     </div>
                 </div>
             </section>
@@ -358,19 +277,7 @@
                     <h2 data-i18n="preview">Preview</h2>
                     <div class="panel-actions">
                         <button id="btnCopy" class="btn" type="button" aria-label="Copy">
-                            <!-- copy -->
-                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <g
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.6"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <rect x="9" y="9" width="11" height="11" rx="2"></rect>
-                                    <rect x="4" y="4" width="11" height="11" rx="2"></rect>
-                                </g>
-                            </svg>
+                            <i class="fa-regular fa-copy icon" aria-hidden="true"></i>
                             <span class="label" data-i18n="copy">Copy</span>
                         </button>
 
@@ -378,76 +285,25 @@
                             id="btnCopyRich"
                             class="btn"
                             type="button"
-                            title="Copy berwarna ke Word"
+                            title="Copy colored to Word"
                             aria-label="Copy Word"
                         >
-                            <!-- copy-word -->
-                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <g
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.6"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <rect x="9" y="9" width="11" height="11" rx="2"></rect>
-                                    <rect x="4" y="4" width="11" height="11" rx="2"></rect>
-                                    <path d="m12 13 2 6 2-6 2 6" />
-                                </g>
-                            </svg>
-                            <span class="label">Copy Word</span>
+                            <i class="fa-solid fa-file-word icon" aria-hidden="true"></i>
+                            <span class="label" data-i18n="copyRich">Copy Word</span>
                         </button>
 
                         <button id="btnExportPNG" class="btn" type="button" aria-label="Save PNG">
-                            <!-- image -->
-                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <g
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.6"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <rect x="3" y="4" width="18" height="16" rx="2"></rect>
-                                    <circle cx="8" cy="9" r="2"></circle>
-                                    <path d="m21 16-5-5-6 6-3-3-4 4" />
-                                </g>
-                            </svg>
+                            <i class="fa-regular fa-image icon" aria-hidden="true"></i>
                             <span class="label">PNG</span>
                         </button>
 
                         <button id="btnExportPDF" class="btn" type="button" aria-label="Save PDF">
-                            <!-- pdf -->
-                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <g
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.6"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                    <path d="M14 2v6h6M9 15h2.5a1.5 1.5 0 0 0 0-3H9v6M14 18v-6h3" />
-                                </g>
-                            </svg>
+                            <i class="fa-regular fa-file-pdf icon" aria-hidden="true"></i>
                             <span class="label">PDF</span>
                         </button>
 
                         <button id="btnPrint" class="btn ghost" type="button" aria-label="Print">
-                            <!-- printer -->
-                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <g
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.6"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <path
-                                        d="M7 8V4h10v4M6 17v4h12v-4M5 8h14a2 2 0 0 1 2 2v5h-3v-3H6v3H3v-5a2 2 0 0 1 2-2z"
-                                    />
-                                </g>
-                            </svg>
+                            <i class="fa-solid fa-print icon" aria-hidden="true"></i>
                             <span class="label" data-i18n="print">Print</span>
                         </button>
                     </div>
@@ -460,6 +316,8 @@
                 </div>
             </section>
         </main>
+
+        <!-- AdSense block -->
         <div style="padding: 20px">
             <ins
                 class="adsbygoogle"
@@ -473,16 +331,47 @@
                 (adsbygoogle = window.adsbygoogle || []).push({});
             </script>
         </div>
+
         <footer class="app-footer">
-            <div id="status" role="status" aria-live="polite"></div>
-            <div class="muted">
-                © <span id="year"></span> TenRusl Highlight Code - Powered By PrismJS •
-                <a href="https://github.com/kakrusliandika/TenRusl-HighlightCode" target="_blank" rel="noopener"
-                    >GitHub</a
+            <div class="left">
+                <div id="status" role="status" aria-live="polite"></div>
+                <div class="muted">
+                    © <span id="year"></span> TenRusl Highlight Code <span class="dot"> • </span> Powered by
+                    <span class="badge">PrismJS</span>
+                </div>
+            </div>
+
+            <div class="right">
+                <a href="/pages/privacy.html" class="icon-btn ghost" data-i18n="privacy" title="Privacy">
+                    <i class="fa-solid fa-shield icon" aria-hidden="true"></i>
+                    <span class="label">Privacy</span>
+                </a>
+                <a href="/pages/terms.html" class="icon-btn ghost" data-i18n="terms" title="Terms">
+                    <i class="fa-solid fa-scale-balanced icon" aria-hidden="true"></i>
+                    <span class="label">Terms</span>
+                </a>
+                <a href="/pages/cookies.html" class="icon-btn ghost" data-i18n="cookies" title="Cookies">
+                    <i class="fa-solid fa-cookie-bite icon" aria-hidden="true"></i>
+                    <span class="label">Cookies</span>
+                </a>
+                <a
+                    href="https://github.com/kakrusliandika/TenRusl-HighlightCode"
+                    target="_blank"
+                    rel="noopener"
+                    class="icon-btn ghost"
+                    title="GitHub"
                 >
+                    <i class="fa-brands fa-github icon" aria-hidden="true"></i>
+                    <span class="label">GitHub</span>
+                </a>
             </div>
         </footer>
 
+        <!-- Scripts (order matters) -->
+        <script defer src="/assets/js/theme.js"></script>
+        <script defer src="/assets/js/language.js"></script>
+        <script defer src="/assets/js/header.js"></script>
         <script defer src="/assets/js/app.js"></script>
+        <script defer src="/assets/js/footer.js"></script>
     </body>
 </html>

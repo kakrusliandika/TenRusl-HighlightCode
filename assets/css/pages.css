@@ -1,292 +1,100 @@
 /* =========================================================
-   TenRusli Pages UI — pages.css
-   - Dark/Light + tokens
-   - Header sticky + mobile nav
-   - Cards, Buttons, Badges, Chips
-   - Forms (input, textarea, select, check/radio)
-   - Tables (striped, hover, responsive), Pagination
-   - Prose typography (policy pages)
-   - Code blocks + Copy button
-   - Tabs, Accordion, Modal, Toast, Tooltip
-   - Breadcrumbs, Alerts, Skeleton, Reveal animation
-   - Utilities + Print styles
+   TRHC Pages — pages.css
+   KHUSUS halaman (contact/privacy/terms/offline/404/cookies)
+   - Menggunakan token & mode dari theme.css (tidak didefinisikan ulang)
+   - Tidak styling header/footer (gunakan chrome.css)
    ======================================================= */
 
-/* 0) Reset */
+/* Reset ringan halaman */
 * {
     box-sizing: border-box;
 }
-:where(html, body) {
+html,
+body {
     height: 100%;
-}
-html {
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
 }
 body {
     margin: 0;
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue",
-        sans-serif;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color-scheme: light dark;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+        "Segoe UI Emoji";
+}
+:focus {
+    outline: none;
+}
+:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
 }
 
-/* 1) Design tokens */
-:root {
-    --brand: #7c3aed; /* Sally purple */
-    --brand-600: #6d28d9;
-    --brand-700: #5b21b6;
-
-    --ok: #10b981;
-    --warn: #f59e0b;
-    --err: #ef4444;
-    --info: #0ea5e9;
-
-    --bg: #0b1020;
-    --bg-soft: #0f1630;
-    --card: #0f1426;
-
-    --page-bg: #ffffff;
-    --card-bg: #ffffff;
-    --text-strong: #0b1220;
-    --text-muted: #6b7280;
-    --border: rgba(0, 0, 0, 0.12);
-    --elev: rgba(0, 0, 0, 0.04);
-    --ring: rgba(124, 58, 237, 0.25);
-
-    --radius-sm: 10px;
-    --radius: 14px;
-    --radius-lg: 22px;
-    --shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
-
-    --gap: 16px;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --page-bg: var(--bg);
-        --card-bg: var(--card);
-        --text-strong: #e5e7eb;
-        --text-muted: #9ca3af;
-        --border: rgba(255, 255, 255, 0.12);
-        --elev: rgba(255, 255, 255, 0.06);
-        --ring: rgba(124, 58, 237, 0.45);
-        --shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
-    }
-}
-/* Force dark if data-theme="dark" */
-:root[data-theme="dark"] {
-    --page-bg: var(--bg);
-    --card-bg: var(--card);
-    --text-strong: #e5e7eb;
-    --text-muted: #9ca3af;
-    --border: rgba(255, 255, 255, 0.14);
-    --elev: rgba(255, 255, 255, 0.08);
-    --ring: rgba(124, 58, 237, 0.55);
-}
-
-/* 2) Base BG accent */
-body {
-    color: var(--text-strong);
-    background: radial-gradient(
-            1200px 800px at 10% -10%,
-            color-mix(in oklab, var(--brand) 18%, transparent),
-            transparent 60%
-        ),
-        radial-gradient(900px 600px at 110% 10%, color-mix(in oklab, var(--brand) 12%, transparent), transparent 60%),
-        var(--page-bg);
-}
-
-/* 3) Layout */
-.container {
-    max-width: 1120px;
-    margin-inline: auto;
-    padding: 24px;
-}
-@media (min-width: 768px) {
-    .container {
-        padding: 32px;
-    }
-}
+/* Layout konten halaman */
 .main {
     min-height: calc(100dvh - 140px);
 }
-
-/* 4) Header / Nav */
-.site-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    backdrop-filter: saturate(140%) blur(8px);
-    background: color-mix(in oklab, var(--page-bg), transparent 10%);
-    border-bottom: 1px solid var(--border);
-    transition: box-shadow 0.2s ease, background 0.2s ease;
+.container {
+    max-width: 1120px;
+    margin-inline: auto;
+    padding: 16px;
 }
-.site-header.scrolled {
-    box-shadow: var(--shadow);
-}
-.header-inner {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 10px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 10px 16px;
-}
-.brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--text-strong);
-    font-weight: 800;
-    letter-spacing: 0.2px;
-}
-.brand .logo {
-    width: 30px;
-    height: 30px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--brand), var(--brand-700));
-    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
-}
-.nav {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 6px;
-}
-.nav a {
-    color: var(--text-muted);
-    text-decoration: none;
-    padding: 8px 10px;
-    border-radius: 10px;
-}
-.nav a:hover,
-.nav a.active {
-    color: var(--text-strong);
-    background: var(--elev);
-}
-.theme-toggle,
-.nav-toggle {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    display: inline-grid;
-    place-items: center;
-    cursor: pointer;
-}
-@media (max-width: 860px) {
-    .nav {
-        display: none;
-        position: absolute;
-        right: 12px;
-        top: 58px;
-        flex-direction: column;
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 8px;
-        box-shadow: var(--shadow);
-    }
-    .nav.open {
-        display: flex;
+@media (min-width: 768px) {
+    .container {
+        padding: 24px;
     }
 }
 
-/* 5) Footer */
-.site-footer {
-    border-top: 1px solid var(--border);
-    background: color-mix(in oklab, var(--page-bg), transparent 8%);
-}
-.site-footer .inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px 16px;
-    color: var(--text-muted);
-    font-size: 14px;
-}
-
-/* 6) Cards */
+/* Komponen umum halaman */
 .card {
-    background: var(--card-bg);
+    background: var(--panel);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: 16px;
     box-shadow: var(--shadow);
     padding: 20px;
 }
 .card.tinted {
-    background: color-mix(in oklab, var(--card-bg), var(--brand) 4%);
+    background: color-mix(in oklab, var(--panel), var(--brand) 5%);
 }
 
-/* 7) Buttons */
+/* Tombol minimal agar konsisten (tidak bentrok app.css) */
 .btn {
-    appearance: none;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    color: var(--text-strong);
-    padding: 10px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--brand);
+    color: #fff;
+    border: none;
     border-radius: 12px;
+    padding: 10px 14px;
     cursor: pointer;
-    transition: transform 0.04s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    transition: background 0.2s ease, transform 0.08s ease, box-shadow 0.2s ease;
 }
 .btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
+    filter: brightness(1.05);
 }
-.btn:focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
+.btn:active {
+    transform: scale(0.98);
 }
-.btn-primary {
-    background: linear-gradient(135deg, var(--brand), var(--brand-600));
-    color: #fff;
-    border-color: transparent;
-}
-.btn-ghost {
+.btn.ghost {
     background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
 }
-.btn-success {
-    background: var(--ok);
-    color: #fff;
-    border-color: transparent;
-}
-.btn-warn {
-    background: var(--warn);
-    color: #111;
-    border-color: transparent;
-}
-.btn-danger {
-    background: var(--err);
-    color: #fff;
-    border-color: transparent;
-}
-.btn-icon {
-    display: inline-grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    padding: 0;
+.btn.alt {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
 }
 .btn-sm {
-    padding: 7px 10px;
+    padding: 6px 10px;
     border-radius: 10px;
-    font-size: 14px;
-}
-.btn-lg {
-    padding: 12px 16px;
-    border-radius: 14px;
-    font-size: 16px;
+    font-size: 12px;
 }
 .btn-block {
     display: block;
     width: 100%;
 }
 
-/* 8) Badges & Chips */
+/* Badge */
 .badge {
     display: inline-flex;
     align-items: center;
@@ -294,98 +102,188 @@ body {
     font-size: 12px;
     padding: 4px 8px;
     border-radius: 999px;
-    background: var(--elev);
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border);
-}
-.chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: var(--card-bg);
-}
-.chip .close {
-    margin-left: 4px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    display: inline-grid;
-    place-items: center;
-    border: 1px solid var(--border);
+    color: var(--muted);
 }
 
-/* 9) Forms */
+/* Prose & link */
+.prose h1 {
+    font-size: clamp(28px, 2.8vw, 40px);
+    line-height: 1.2;
+    margin: 6px 0 14px;
+}
+.prose h2 {
+    font-size: clamp(20px, 2.2vw, 28px);
+    margin: 18px 0 10px;
+}
+.prose p {
+    margin: 10px 0;
+}
+.prose a {
+    color: var(--brand);
+    text-decoration: none;
+    text-underline-offset: 2px;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.breadcrumbs a {
+    color: inherit;
+    text-decoration: none;
+}
+.breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+/* Grid util */
+.grid {
+    display: grid;
+    gap: 16px;
+}
+.grid-2 {
+    grid-template-columns: 1fr;
+}
+.grid-3 {
+    grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+    .grid-2 {
+        grid-template-columns: 1fr 1fr;
+    }
+    .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+.center {
+    display: grid;
+    place-items: center;
+}
+.mt-2 {
+    margin-top: 0.5rem;
+}
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+.mb-3 {
+    margin-bottom: 0.75rem;
+}
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+/* ===========================
+   FORMS (Contact) — rapi & responsif
+   =========================== */
+.contact-form {
+    display: grid;
+    gap: 16px;
+}
+
+/* grid bidang: stacked di mobile, 2 kolom di ≥700px */
+.form-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr;
+}
+@media (min-width: 700px) {
+    .form-grid.two {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* field & label */
 .field {
     display: grid;
     gap: 6px;
 }
 .label {
     font-weight: 600;
+    color: var(--text);
 }
-.help {
-    font-size: 12px;
-    color: var(--text-muted);
-}
+
+/* input/textarea/select */
 .input,
 .textarea,
 .select {
     width: 100%;
-    padding: 10px 12px;
-    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text);
     border: 1px solid var(--border);
-    background: var(--card-bg);
-    color: var(--text-strong);
+    border-radius: 12px;
+    padding: 10px 12px;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 .textarea {
-    min-height: 120px;
+    min-height: 140px;
+    resize: vertical;
+}
+.input::placeholder,
+.textarea::placeholder {
+    color: color-mix(in oklab, var(--muted), transparent 15%);
 }
 .input:focus,
 .textarea:focus,
 .select:focus {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
-}
-.check-group,
-.radio-group {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    align-items: center;
-}
-.switch {
-    appearance: none;
-    width: 44px;
-    height: 26px;
-    border-radius: 999px;
-    background: var(--elev);
-    position: relative;
-    border: 1px solid var(--border);
-    cursor: pointer;
-}
-.switch::after {
-    content: "";
-    position: absolute;
-    inset: 3px;
-    width: 20px;
-    height: 20px;
-    background: var(--card-bg);
-    border-radius: 50%;
-    transition: transform 0.2s ease;
-    box-shadow: var(--shadow);
-}
-.switch:checked {
-    background: color-mix(in oklab, var(--brand), transparent 30%);
-    border-color: color-mix(in oklab, var(--brand), transparent 40%);
-}
-.switch:checked::after {
-    transform: translateX(18px);
+    border-color: color-mix(in oklab, var(--brand), var(--border) 35%);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 30%, transparent);
+    outline: none;
 }
 
-/* 10) Tables */
+/* state invalid (HTML5 constraint) */
+.input:invalid,
+.textarea:invalid {
+    border-color: color-mix(in oklab, #ef4444 70%, var(--border));
+}
+.input:invalid:focus,
+.textarea:invalid:focus {
+    box-shadow: 0 0 0 3px color-mix(in oklab, #ef4444 25%, transparent);
+}
+
+/* help text */
+.help {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* actions */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+@media (max-width: 420px) {
+    .form-actions .btn {
+        flex: 1 1 auto;
+        justify-content: center;
+    }
+}
+
+/* Aside box (kontak langsung) */
+aside.card h3 {
+    margin-top: 0;
+}
+aside.card p {
+    margin: 8px 0;
+}
+.alert {
+    border-left: 4px solid var(--brand);
+    background: color-mix(in oklab, var(--surface), var(--brand) 6%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+}
+
+/* Tabel */
 .table-wrap {
-    width: 100%;
     overflow: auto;
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -401,13 +299,13 @@ body {
     text-align: left;
 }
 .table thead th {
+    background: rgba(255, 255, 255, 0.02);
     position: sticky;
     top: 0;
-    background: color-mix(in oklab, var(--card-bg), transparent 2%);
     z-index: 1;
 }
 .table.striped tbody tr:nth-child(odd) {
-    background: color-mix(in oklab, var(--elev), transparent 40%);
+    background: rgba(255, 255, 255, 0.02);
 }
 .table.hover tbody tr:hover {
     background: color-mix(in oklab, var(--brand) 6%, transparent);
@@ -427,286 +325,28 @@ th[data-sort].desc::after {
     content: " ↓";
 }
 
-/* 11) Pagination */
-.pagination {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-.pagination .page {
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    padding: 6px 10px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: inherit;
-}
-.pagination .page.active {
-    border-color: var(--brand);
-    outline: 2px solid var(--ring);
-}
-
-/* 12) Alerts */
-.alert {
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--brand);
-    background: color-mix(in oklab, var(--elev), transparent 30%);
-    border-radius: 12px;
-    padding: 12px 14px;
-}
-.alert.success {
-    border-left-color: var(--ok);
-}
-.alert.warn {
-    border-left-color: var(--warn);
-}
-.alert.danger {
-    border-left-color: var(--err);
-}
-
-/* 13) Prose */
-.prose h1 {
-    font-size: clamp(28px, 2.8vw, 40px);
-    line-height: 1.15;
-    margin: 8px 0 16px;
-}
-.prose h2 {
-    font-size: clamp(20px, 2.2vw, 28px);
-    margin: 20px 0 12px;
-}
-.prose h3 {
-    font-size: clamp(18px, 2vw, 22px);
-    margin: 16px 0 10px;
-}
-.prose p {
-    margin: 10px 0;
-}
-.prose a {
-    color: var(--brand);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 2px;
-}
-.prose ul,
-.prose ol {
-    padding-left: 1.25rem;
-}
-.prose strong {
-    font-weight: 700;
-}
-
-/* 14) Code Blocks (Prism-friendly) */
-code,
-pre {
+/* Code blocks */
+pre,
+code {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 pre {
-    background: var(--bg-soft);
-    color: var(--text-strong);
+    margin: 0;
+    padding: 14px;
+    background: var(--surface);
+    color: var(--text);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 14px;
     overflow: auto;
     position: relative;
 }
-.copy-btn {
+pre .btn.copy {
     position: absolute;
     top: 8px;
     right: 8px;
-    z-index: 1;
-    font-size: 12px;
-    padding: 6px 8px;
 }
 
-/* 15) Breadcrumbs */
-.breadcrumbs {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-}
-.breadcrumbs a {
-    color: inherit;
-    text-decoration: none;
-}
-.breadcrumbs a:hover {
-    text-decoration: underline;
-}
-
-/* 16) Tabs */
-.tabs {
-    display: grid;
-    gap: 12px;
-}
-.tab-list {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-.tab {
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    border-radius: 10px;
-    cursor: pointer;
-}
-.tab[aria-selected="true"] {
-    outline: 2px solid var(--ring);
-    border-color: transparent;
-    background: color-mix(in oklab, var(--brand), transparent 85%);
-}
-.tab-panel {
-    display: none;
-}
-.tab-panel.active {
-    display: block;
-}
-
-/* 17) Accordion */
-.accordion {
-    display: grid;
-    gap: 8px;
-}
-.accordion .item {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--card-bg);
-    overflow: hidden;
-}
-.accordion .head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 14px;
-    cursor: pointer;
-}
-.accordion .body {
-    display: grid;
-    gap: 10px;
-    padding: 12px 14px;
-    border-top: 1px solid var(--border);
-}
-.accordion .item[open] .body {
-    display: grid;
-}
-
-/* 18) Modal */
-.modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 60;
-}
-.modal-backdrop.open {
-    display: flex;
-}
-.modal {
-    width: min(92vw, 680px);
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-    padding: 16px;
-}
-.modal .modal-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-.modal .modal-body {
-    margin-top: 10px;
-}
-.modal .modal-foot {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 14px;
-}
-
-/* 19) Toasts */
-.toast-wrap {
-    position: fixed;
-    right: 12px;
-    bottom: 12px;
-    display: grid;
-    gap: 8px;
-    z-index: 70;
-}
-.toast {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--brand);
-    border-radius: 12px;
-    padding: 10px 12px;
-    box-shadow: var(--shadow);
-}
-.toast.success {
-    border-left-color: var(--ok);
-}
-.toast.warn {
-    border-left-color: var(--warn);
-}
-.toast.error {
-    border-left-color: var(--err);
-}
-
-/* 20) Tooltip (pure CSS) */
-[data-tooltip] {
-    position: relative;
-}
-[data-tooltip]::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 6px 8px;
-    border-radius: 8px;
-    background: var(--text-strong);
-    color: var(--page-bg);
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.15s ease, transform 0.15s ease;
-    transform-origin: bottom center;
-    scale: 0.98;
-}
-[data-tooltip]:hover::after,
-[data-tooltip]:focus-visible::after {
-    opacity: 0.95;
-    scale: 1;
-}
-
-/* 21) Consent banner */
-#consent-banner {
-    position: fixed;
-    inset-inline: 12px;
-    bottom: 12px;
-    z-index: 60;
-    display: none;
-}
-#consent-banner .wrap {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    padding: 14px;
-    display: grid;
-    gap: 10px;
-}
-#consent-banner .actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-}
-
-/* 22) Reveal animation */
+/* Reveal */
 .reveal {
     opacity: 0;
     translate: 0 6px;
@@ -717,103 +357,10 @@ pre {
     translate: 0 0;
 }
 
-/* 23) Skeleton */
-.skeleton {
-    position: relative;
-    overflow: hidden;
-    background: color-mix(in oklab, var(--elev), transparent 30%);
-    border-radius: 10px;
-    min-height: 1rem;
-}
-.skeleton::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-    animation: shimmer 1.2s infinite;
-}
-@keyframes shimmer {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(100%);
-    }
-}
-
-/* 24) Utilities */
-.sr-only {
-    position: absolute !important;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
-.hidden {
-    display: none !important;
-}
-.center {
-    display: grid;
-    place-items: center;
-}
-.grid {
-    display: grid;
-    gap: var(--gap);
-}
-.grid-2 {
-    grid-template-columns: 1fr;
-}
-.grid-3 {
-    grid-template-columns: 1fr;
-}
-@media (min-width: 768px) {
-    .grid-2 {
-        grid-template-columns: 1fr 1fr;
-    }
-    .grid-3 {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-.mt-1 {
-    margin-top: 0.25rem;
-}
-.mt-2 {
-    margin-top: 0.5rem;
-}
-.mt-3 {
-    margin-top: 0.75rem;
-}
-.mt-4 {
-    margin-top: 1rem;
-}
-.mb-1 {
-    margin-bottom: 0.25rem;
-}
-.mb-2 {
-    margin-bottom: 0.5rem;
-}
-.mb-3 {
-    margin-bottom: 0.75rem;
-}
-.mb-4 {
-    margin-bottom: 1rem;
-}
-
-/* 25) Print */
+/* Print */
 @media print {
-    .site-header,
-    .site-footer,
-    #consent-banner,
-    .toast-wrap {
-        display: none !important;
-    }
-    .card,
-    .prose {
-        box-shadow: none !important;
-        border-color: #ccc !important;
+    .card {
+        box-shadow: none;
+        border-color: #ccc;
     }
 }
