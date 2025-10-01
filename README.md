@@ -81,64 +81,62 @@
 ├─ README.md
 ├─ humans.txt
 ├─ consent-base.js
-├─ googleFClG-yRowubCICDyQFjDm65cnX4tk4WYcmDA0EXmRQQ.html   # Google site verification
+├─ googleFClG-yRowubCICDyQFjDm65cnX4tk4WYcmDA0EXmRQQ.html
 ├─ _headers
 ├─ _redirects
 ├─ .well-known/
 │  └─ security.txt
-├─ pages/
+├─ assets/
 │  ├─ index.html
+│  ├─ css/
+│  │  ├─ app.css
+│  │  ├─ chrome.css
+│  │  ├─ language.css
+│  │  ├─ pages.css
+│  │  ├─ theme.css
+│  │  └─ index.html
+│  ├─ i18n/
+│  │  ├─ en.json
+│  │  ├─ id.json
+│  │  ├─ pages.json
+│  │  └─ index.html
+│  ├─ images/
+│  │  ├─ icon.svg
+│  │  └─ index.html
+│  ├─ js/
+│  │  ├─ app.js
+│  │  ├─ footer-pages.js
+│  │  ├─ footer.js
+│  │  ├─ header-pages.js
+│  │  ├─ header.js
+│  │  ├─ index.html
+│  │  ├─ language-pages.js
+│  │  ├─ language.js
+│  │  ├─ pages.js
+│  │  ├─ sw.js
+│  │  └─ theme.js
+│  ├─ json/
+│  │  ├─ index.html
+│  │  ├─ languages.json
+│  │  └─ settings.json
+│  └─ plugin/
+│     ├─ fontawesome/
+│     ├─ prismjs/
+│     ├─ htmlotimage.js        # vendor (html-to-image)
+│     ├─ index.html
+│     └─ jspdf.js              # vendor (jsPDF UMD)
+├─ pages/
+│  ├─ 404.html
 │  ├─ ad-unit-example.html
 │  ├─ contact.html
 │  ├─ cookies.html
 │  ├─ head-snippets.html
 │  ├─ index-injection-example.html
+│  ├─ index.html
+│  ├─ offline.html
 │  ├─ privacy.html
 │  └─ terms.html
-└─ assets/
-   ├─ index.html
-   ├─ css/
-   │  ├─ app.css
-   │  ├─ pages.css
-   │  └─ index.html
-   ├─ js/
-   │  ├─ app.js
-   │  ├─ pages.js
-   │  ├─ sw.js
-   │  └─ index.html
-   ├─ images/
-   │  ├─ icon.svg
-   │  └─ index.html
-   ├─ json/
-   │  ├─ languages.json
-   │  └─ index.html
-   ├─ i18n/
-   │  ├─ en.json
-   │  ├─ id.json
-   │  └─ index.html
-   └─ plugin/
-      ├─ index.html
-      ├─ htmlotimage.js          # vendor (html-to-image)
-      ├─ jspdf.js                # vendor (jsPDF UMD)
-      └─ prismjs/
-         └─ package/
-            ├─ prism.js
-            ├─ components/       # autoloader target (lang .min.js)
-            ├─ plugins/
-            │  ├─ line-numbers/
-            │  └─ match-braces/
-            ├─ themes/
-            │  ├─ prism-okaidia.min.css
-            │  └─ prism-solarizedlight.min.css
-            ├─ _headers
-            ├─ CHANGELOG.md
-            ├─ components.js
-            ├─ components.json
-            ├─ dependencies.js
-            ├─ index.html
-            ├─ LICENSE
-            ├─ package.json
-            └─ README.md
+
 ```
 
 ---

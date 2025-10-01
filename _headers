@@ -1,68 +1,80 @@
 /* 
-  Content-Security-Policy: default-src 'self'; img-src 'self' blob: data:; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
-  X-Content-Type-Options: nosniff
-  X-Frame-Options: DENY
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Resource-Policy: same-origin
-  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Security & best-practice headers (Cloudflare Pages/Netlify compatible)
+  Pastikan jalur file sesuai struktur project kamu.
 */
 
-# Ensure proper types & caching for robots/sitemaps
-/robots.txt
-  Content-Type: text/plain; charset=utf-8
-  Cache-Control: public, max-age=86400
-  X-Robots-Tag: noindex, follow
+/* Global */
+Content-Security-Policy: default-src 'self'; img-src 'self' blob: data:; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Resource-Policy: same-origin
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
 
-/sitemap.xml
-  Content-Type: application/xml; charset=utf-8
-  Cache-Control: public, max-age=86400
-  X-Robots-Tag: noindex, follow
+/* robots/sitemap */
+#/robots.txt
+Content-Type: text/plain; charset=utf-8
+Cache-Control: public, max-age=86400
+X-Robots-Tag: noindex, follow
 
-/sitemap-index.xml
-  Content-Type: application/xml; charset=utf-8
-  Cache-Control: public, max-age=86400
-  X-Robots-Tag: noindex, follow
+#/sitemap.xml
+Content-Type: application/xml; charset=utf-8
+Cache-Control: public, max-age=86400
+X-Robots-Tag: noindex, follow
 
-/humans.txt
-  Content-Type: text/plain; charset=utf-8
-  Cache-Control: public, max-age=604800
-  X-Robots-Tag: noindex, follow
+#/sitemap-index.xml
+Content-Type: application/xml; charset=utf-8
+Cache-Control: public, max-age=86400
+X-Robots-Tag: noindex, follow
 
-/.well-known/security.txt
-  Content-Type: text/plain; charset=utf-8
-  Cache-Control: public, max-age=604800
-  X-Robots-Tag: noindex, follow
+#/humans.txt
+Content-Type: text/plain; charset=utf-8
+Cache-Control: public, max-age=604800
+X-Robots-Tag: noindex, follow
 
-/index.html
-  Cache-Control: no-cache, must-revalidate
+# security.txt
+#/.well-known/security.txt
+Content-Type: text/plain; charset=utf-8
+Cache-Control: public, max-age=604800
+X-Robots-Tag: noindex, follow
 
-/js/sw.js
-  Cache-Control: no-cache
-  Service-Worker-Allowed: /
+/* HTML entry */
+#/index.html
+Cache-Control: no-cache, must-revalidate
 
-/manifest.webmanifest
-  Content-Type: application/manifest+json
-  Cache-Control: public, max-age=600
+/* Service Worker — dua lokasi didukung (utama + fallback) */
+#/sw.js
+Cache-Control: no-cache
+Service-Worker-Allowed: /
 
-# Static assets (fingerprinted -> long cache)
-/assets/*
-  Cache-Control: public, max-age=31536000, immutable
+#/assets/js/sw.js
+Cache-Control: no-cache
+Service-Worker-Allowed: /
 
-# Prism components (autoloaded -> long cache)
-/assets/plugin/prismjs/package/components/*
-  Cache-Control: public, max-age=31536000, immutable
+/* Manifest */
+#/manifest.webmanifest
+Content-Type: application/manifest+json
+Cache-Control: public, max-age=600
 
-# i18n JSON (not fingerprinted -> shorter cache for quick updates)
-/assets/i18n/*
-  Content-Type: application/json; charset=utf-8
-  Cache-Control: public, max-age=3600
+/* Static assets (fingerprinted) */
+#/assets/*
+Cache-Control: public, max-age=31536000, immutable
 
-# Open Graph images (can be long cached)
-/assets/og/*
-  Cache-Control: public, max-age=31536000, immutable
+/* Prism components (autoloaded) */
+#/assets/plugin/prismjs/package/components/*
+Cache-Control: public, max-age=31536000, immutable
 
-/assets/images/icon.svg
-  Content-Type: image/svg+xml; charset=utf-8
-  Cache-Control: public, max-age=31536000, immutable
+/* i18n JSON (lebih pendek agar mudah diupdate) */
+#/assets/i18n/*
+Content-Type: application/json; charset=utf-8
+Cache-Control: public, max-age=3600
+
+/* OG images */
+#/assets/og/*
+Cache-Control: public, max-age=31536000, immutable
+
+#/assets/images/icon.svg
+Content-Type: image/svg+xml; charset=utf-8
+Cache-Control: public, max-age=31536000, immutable

@@ -1,34 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <!-- Homepage (ID) -->
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Homepage -->
   <url>
     <loc>https://tenrusl-highlightcode.pages.dev/</loc>
     <lastmod>2025-09-28T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <!-- Root dipakai untuk EN & x-default.
+         Hanya tambahkan /id/ jika halaman itu benar-benar ada. -->
     <xhtml:link rel="alternate" hreflang="en" href="https://tenrusl-highlightcode.pages.dev/"/>
-    <xhtml:link rel="alternate" hreflang="id-ID" href="https://tenrusl-highlightcode.pages.dev/id/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tenrusl-highlightcode.pages.dev/"/>
-    <image:image>
-      <image:loc>https://tenrusl-highlightcode.pages.dev/assets/og/TenRusl-highlight-1200x630.png</image:loc>
-      <image:title>TenRusl Highlight Code — Multi-Language Code Highlighter</image:title>
-    </image:image>
   </url>
 
-  <!-- Homepage (EN) -->
+  <!-- Halaman statis -->
   <url>
-    <loc>https://tenrusl-highlightcode.pages.dev/en/</loc>
+    <loc>https://tenrusl-highlightcode.pages.dev/pages/contact.html</loc>
     <lastmod>2025-09-28T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tenrusl-highlightcode.pages.dev/"/>
-    <xhtml:link rel="alternate" hreflang="id-ID" href="https://tenrusl-highlightcode.pages.dev/id/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tenrusl-highlightcode.pages.dev/"/>
-    <image:image>
-      <image:loc>https://tenrusl-highlightcode.pages.dev/assets/images/icon.svg</image:loc>
-      <image:title>TenRusl Highlight Code — Multi-Language Code Highlighter</image:title>
-    </image:image>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
   </url>
+
+  <url>
+    <loc>https://tenrusl-highlightcode.pages.dev/pages/privacy.html</loc>
+    <lastmod>2025-09-28T00:00:00+00:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://tenrusl-highlightcode.pages.dev/pages/terms.html</loc>
+    <lastmod>2025-09-28T00:00:00+00:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://tenrusl-highlightcode.pages.dev/pages/cookies.html</loc>
+    <lastmod>2025-09-28T00:00:00+00:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
 </urlset>
