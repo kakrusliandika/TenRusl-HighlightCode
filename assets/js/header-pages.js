@@ -1,10 +1,5 @@
 /* =========================================================
    header-pages.js — FINAL (match Home header)
-   - Brand kiri + badge PWA
-   - Menu kanan (ghost buttons) + Lang/Theme toggles
-   - Active link auto
-   - Sinkron theme (class :root.light) atau theme.js bila ada
-   - Re-apply i18n saat bahasa berubah
    ======================================================= */
 (() => {
     "use strict";
@@ -58,7 +53,7 @@
 
     /* ---------- inject header ---------- */
     function injectHeader() {
-        // jika pages ini sudah punya header pages, jangan inject lagi
+        // Cegah double-inject di pages
         if (document.querySelector('.app-header[data-scope="pages"]')) return;
 
         const hdr = document.createElement("header");
@@ -162,8 +157,8 @@
         }
     }
 
-    // i18n broadcast (scope ke header pages saja)
-    document.addEventListener("trhc:i18nUpdated", () => {
+    // i18n broadcast khusus pages: konsisten ke `trhc:langchange`
+    document.addEventListener("trhc:langchange", () => {
         const hdr = document.querySelector('.app-header[data-scope="pages"]');
         if (!hdr) return;
         applyI18N(hdr);

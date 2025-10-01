@@ -1,11 +1,11 @@
 /* TRHC – Service Worker (Prism self-host 1.30.0) */
-const VERSION = "v1.30.0-trhc-3";
+const VERSION = "v1.30.0-trhc-4";
 const CORE_CACHE = `trhc-core-${VERSION}`;
 const RUNTIME_CACHE = `trhc-runtime-${VERSION}`;
 const COMPONENTS_CACHE = `trhc-components-${VERSION}`;
 const COMPONENTS_MAX = 200;
 
-// (Opsional) halaman offline kustom, jika ada
+// Offline page (opsional, kalau ada)
 const OFFLINE_URL = "/pages/offline.html";
 
 const PRECACHE = [
@@ -14,11 +14,11 @@ const PRECACHE = [
     "/index.html",
     "/manifest.webmanifest",
 
-    // CSS (split)
+    // CSS (split) – gunakan yang memang ada
     "/assets/css/theme.css",
     "/assets/css/language.css",
-    "/assets/css/header.css",
-    "/assets/css/footer.css",
+    "/assets/css/chrome.css",
+    "/assets/css/pages.css",
     "/assets/css/app.css",
 
     // JS (split)
@@ -52,12 +52,24 @@ const PRECACHE = [
     "/assets/plugin/prismjs/package/themes/prism-solarizedlight.min.css",
 ];
 
+// Precaching yang tahan-miss (tidak fail kalau ada 404)
+async function safePrecache() {
+    const cache = await caches.open(CORE_CACHE);
+    const tasks = PRECACHE.map(async (url) => {
+        try {
+            const res = await fetch(url, { cache: "no-cache" });
+            if (res && res.ok) await cache.put(url, res.clone());
+        } catch {}
+    });
+    await Promise.allSettled(tasks);
+}
+
 self.addEventListener("install", (e) => {
     e.waitUntil(
-        caches
-            .open(CORE_CACHE)
-            .then((c) => c.addAll(PRECACHE))
-            .then(() => self.skipWaiting())
+        (async () => {
+            await safePrecache();
+            await self.skipWaiting();
+        })()
     );
 });
 
@@ -102,7 +114,6 @@ self.addEventListener("fetch", (e) => {
                     (await caches.open(RUNTIME_CACHE)).put(req, net.clone());
                     return net;
                 } catch {
-                    // Fallback ke offline page jika ada, kalau tidak ke index.html
                     return (
                         (await caches.match(OFFLINE_URL)) ||
                         (await caches.match("/index.html")) ||
@@ -120,7 +131,7 @@ self.addEventListener("fetch", (e) => {
         return;
     }
 
-    // Lainnya (termasuk CDN Font Awesome): stale-while-revalidate
+    // Lainnya (termasuk CDN): stale-while-revalidate
     e.respondWith(staleWhileRevalidate(RUNTIME_CACHE, req));
 });
 

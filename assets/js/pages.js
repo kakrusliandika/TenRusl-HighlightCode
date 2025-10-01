@@ -1,9 +1,5 @@
 /* =========================================================
    pages.js — fitur halaman saja
-   - Tidak inject header/footer (pakai header.js/footer.js)
-   - Tidak atur tema (pakai theme.js)
-   - Code copy, table sort, reveal, SW register
-   - Reaktif i18n: label copy mengikuti PagesI18N
    ======================================================= */
 (function () {
     const $ = (s, c = document) => c.querySelector(s);
@@ -88,16 +84,13 @@
         $$(".reveal").forEach((el) => obs.observe(el));
     }
 
-    /* ---------- SW register ---------- */
+    /* ---------- SW register (ROOT ONLY) ---------- */
     async function registerSW() {
         if (!("serviceWorker" in navigator)) return;
         try {
-            await navigator.serviceWorker.register("/sw.js", { scope: "/" });
-        } catch {
-            // fallback lokasi alternatif (jika struktur berbeda)
-            try {
-                await navigator.serviceWorker.register("/assets/js/sw.js", { scope: "/" });
-            } catch {}
+            await navigator.serviceWorker.register("/assets/js/sw.js");
+        } catch (err) {
+            // diam bila gagal
         }
     }
 
