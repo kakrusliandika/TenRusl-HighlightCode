@@ -58,10 +58,12 @@
 
     /* ---------- inject header ---------- */
     function injectHeader() {
-        if ($(".app-header")) return;
+        // jika pages ini sudah punya header pages, jangan inject lagi
+        if (document.querySelector('.app-header[data-scope="pages"]')) return;
 
         const hdr = document.createElement("header");
         hdr.className = "app-header";
+        hdr.setAttribute("data-scope", "pages");
         hdr.innerHTML = `
       <div class="brand">
         <img src="/assets/images/icon.svg" width="28" height="28" alt="TRHC" />
@@ -160,9 +162,9 @@
         }
     }
 
-    // i18n broadcast
+    // i18n broadcast (scope ke header pages saja)
     document.addEventListener("trhc:i18nUpdated", () => {
-        const hdr = $(".app-header");
+        const hdr = document.querySelector('.app-header[data-scope="pages"]');
         if (!hdr) return;
         applyI18N(hdr);
         const b = $("#uiLangBadge", hdr);

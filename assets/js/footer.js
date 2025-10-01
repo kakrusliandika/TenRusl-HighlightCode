@@ -1,68 +1,116 @@
 /* =========================================================
-   TRHC footer.js — Home only (.app-footer)
+   footer.js — FINAL (HOME / .app-footer)
+   - Bind existing .app-footer (no inject) — jika ada
+   - Inject .app-footer — jika belum ada
+   - i18n labels OK (tanpa [object Object])
+     • Prioritas: TRI18N.t(key) → PagesI18N.t(key) → PagesI18N.t('nav.'+key)
    - Dynamic year (#year)
-   - i18n sync for footer links (Privacy/Terms/Cookies)
-     • primary: TRI18N (home)
-     • fallback: PagesI18N.nav.* (jika tersedia)
-   - TRStatus helper (status bar with auto-clear)
+   - TRStatus helper (auto-clear 2.2s)
    ======================================================= */
 (() => {
     "use strict";
 
-    const FOOT_SEL = ".app-footer";
+    const $ = (s, c = document) => c.querySelector(s);
+    const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
 
-    // ---- year ----
-    function setYear() {
-        const foot = document.querySelector(FOOT_SEL);
-        if (!foot) return;
-        const y = foot.querySelector("#year");
-        if (y) y.textContent = new Date().getFullYear();
+    function t(key, fallback) {
+        const tri18n = window.TRI18N && typeof window.TRI18N.t === "function" ? window.TRI18N.t : null;
+        const pgi18n = window.PagesI18N && typeof window.PagesI18N.t === "function" ? window.PagesI18N.t : null;
+
+        let out = tri18n ? tri18n(key) : null;
+        if (out == null && pgi18n) out = pgi18n(key);
+        if (out == null && pgi18n && !key.includes(".")) out = pgi18n(`nav.${key}`);
+
+        return out ?? (fallback || key);
     }
 
-    // ---- i18n helpers (Home first, fallback to Pages dict) ----
-    function tri18n(key) {
-        try {
-            return window.TRI18N?.t?.(key) ?? null;
-        } catch {
-            return null;
-        }
-    }
-    function pagesI18n(key) {
-        try {
-            return window.PagesI18N?.t?.(key) ?? null;
-        } catch {
-            return null;
-        }
-    }
-    function translateFooter() {
-        const foot = document.querySelector(FOOT_SEL);
-        if (!foot) return;
-
-        foot.querySelectorAll("[data-i18n]").forEach((el) => {
+    function applyI18N(scope) {
+        $$("[data-i18n]", scope).forEach((el) => {
             const key = el.getAttribute("data-i18n");
-            const label = el.querySelector(":scope > .label");
-
-            // 1) coba TRI18N (home)
-            let txt = tri18n(key);
-
-            // 2) fallback ke pages.json => nav.{key} (mis. privacy -> nav.privacy)
-            if (!txt && !key.includes(".")) {
-                txt = pagesI18n(`nav.${key}`);
-            }
-
-            if (txt) {
-                if (label) label.textContent = txt;
-                else el.textContent = txt;
-            }
+            const label = el.querySelector(".label");
+            const text = t(key, label ? label.textContent : el.textContent);
+            if (label) label.textContent = text;
+            else el.textContent = text;
         });
     }
 
-    // ---- public status helper ----
-    window.TRStatus = {
+    function setYear(scope) {
+        const yearEl = $("#year", scope);
+        if (yearEl) yearEl.textContent = new Date().getFullYear();
+    }
+
+    function injectFooter() {
+        // jangan injeksi kalau sudah ada
+        const existing = $(".app-footer");
+        if (existing) return existing;
+
+        const f = document.createElement("footer");
+        f.className = "app-footer";
+        f.innerHTML = `
+      <div class="left">
+        <div id="status" role="status" aria-live="polite"></div>
+        <div class="muted">
+          © <span id="year"></span> TenRusl Highlight Code <span class="dot"> • </span> Powered by
+          <span class="badge">PrismJS</span>
+        </div>
+      </div>
+
+      <div class="right">
+        <a href="/pages/privacy.html" class="icon-btn" data-i18n="privacy" title="Privacy">
+          <i class="fa-solid fa-shield icon" aria-hidden="true"></i>
+          <span class="label">Privacy</span>
+        </a>
+        <a href="/pages/terms.html" class="icon-btn" data-i18n="terms" title="Terms">
+          <i class="fa-solid fa-scale-balanced icon" aria-hidden="true"></i>
+          <span class="label">Terms</span>
+        </a>
+        <a href="/pages/cookies.html" class="icon-btn" data-i18n="cookies" title="Cookies">
+          <i class="fa-solid fa-cookie-bite icon" aria-hidden="true"></i>
+          <span class="label">Cookies</span>
+        </a>
+        <a
+          href="https://github.com/kakrusliandika/TenRusl-HighlightCode"
+          target="_blank" rel="noopener"
+          class="icon-btn"
+          title="GitHub"
+        >
+          <i class="fa-brands fa-github icon" aria-hidden="true"></i>
+          <span class="label">GitHub</span>
+        </a>
+      </div>`;
+        document.body.appendChild(f);
+        return f;
+    }
+
+    function bindFooter() {
+        const f = $(".app-footer") || injectFooter();
+        if (!f) return;
+        setYear(f);
+        applyI18N(f);
+    }
+
+    // re-translate saat bahasa diubah
+    document.addEventListener("trhc:i18nUpdated", () => {
+        const f = $(".app-footer");
+        if (f) applyI18N(f);
+    });
+
+    // boot
+    function boot() {
+        bindFooter();
+    }
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", boot, { once: true });
+    } else {
+        boot();
+    }
+
+    // helper status bar
+    window.TRStatus = window.TRStatus || {
         set(msg) {
-            const foot = document.querySelector(FOOT_SEL);
-            if (!foot) return;
-            const el = foot.querySelector("#status");
+            const f = $(".app-footer");
+            if (!f) return;
+            const el = $("#status", f);
             if (!el) return;
             el.textContent = msg || "";
             if (msg) {
@@ -72,18 +120,4 @@
             }
         },
     };
-
-    // ---- boot ----
-    function boot() {
-        setYear();
-        translateFooter();
-    }
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", boot, { once: true });
-    } else {
-        boot();
-    }
-
-    // re-translate saat bahasa diubah dari header
-    document.addEventListener("trhc:i18nUpdated", translateFooter);
 })();

@@ -304,3 +304,26 @@
     border-color: var(--brand, #8b5cf6);
     box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) inset;
 }
+
+/* =========================
+   PAGES-ONLY (mobile) override
+   - Icon-only pada header pages
+   - Ikon sedikit lebih kecil
+   - Tidak mempengaruhi app
+   ========================= */
+@media (max-width: 980px) {
+    .app-header[data-scope="pages"] .controls .label {
+        display: none;
+    }
+    .app-header[data-scope="pages"] .controls .icon {
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+    }
+    .app-header[data-scope="pages"] .controls .icon-btn {
+        height: 38px;
+        min-width: 38px;
+        padding: 0 8px;
+        border-radius: 12px;
+    }
+}

@@ -149,8 +149,25 @@
     function applyTexts() {
         document.querySelectorAll("[data-i18n]").forEach((el) => {
             const k = el.getAttribute("data-i18n");
-            el.textContent = t(k);
+            const txt = t(k);
+
+            // Jika ada <span class="label"> → terjemahkan label-nya saja
+            const label = el.matches(".label") ? el : el.querySelector(":scope > .label");
+
+            if (label) {
+                label.textContent = txt;
+            } else if (el.childElementCount === 0) {
+                // Hanya kalau TIDAK punya anak elemen (tidak ada ikon), aman set textContent
+                el.textContent = txt;
+            } else {
+                // Punya anak (mis. ikon) tapi tanpa .label → sisipkan label agar tidak menghapus ikon
+                const span = document.createElement("span");
+                span.className = "label";
+                span.textContent = txt;
+                el.appendChild(span);
+            }
         });
+
         const input = document.getElementById("input");
         if (input && dict.placeholder) input.placeholder = dict.placeholder;
 
