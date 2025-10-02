@@ -2,7 +2,6 @@
 
 > A lightweight, fast, and secure **PWA** code highlighter. **Copy with colors to Word/Google Docs without breaking formatting**, export **PNG/PDF**, **offline‑first** with a Service Worker, **auto‑detect** language + **PrismJS autoloader**.
 
-[![PWA](https://img.shields.io/badge/PWA-Ready-8b5cf6)](#pwa--caching)
 ![Status](https://img.shields.io/badge/PWA-Ready-8b5cf6)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Stack](https://img.shields.io/badge/Stack-Vanilla%20JS%20%7C%20diff--match--patch%20%7C%20PWA-111)
