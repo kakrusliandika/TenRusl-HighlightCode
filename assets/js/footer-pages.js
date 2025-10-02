@@ -34,7 +34,7 @@
         f.className = "site-footer";
         f.innerHTML = `
       <div class="left">
-        <span>© ${year} TenRusli Highlight Code</span>
+        <span>© ${year} TenRusl Highlight Code</span>
         <span class="badge">PWA</span>
       </div>
       <div class="right">

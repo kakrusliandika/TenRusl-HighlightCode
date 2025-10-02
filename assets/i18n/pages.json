@@ -15,7 +15,7 @@
         },
 
         "contact": {
-            "title": "Contact — TenRusli Highlight Code",
+            "title": "Contact — TenRusl Highlight Code",
             "heading": "Contact",
             "description": "We’d love to hear from you.",
             "form": {
@@ -38,9 +38,9 @@
         },
 
         "privacy": {
-            "title": "Privacy Policy — TenRusli Highlight Code",
+            "title": "Privacy Policy — TenRusl Highlight Code",
             "heading": "Privacy Policy",
-            "intro": "TenRusli Highlight Code (the “Service”) is a web app (PWA) for code highlighting. We respect your privacy.",
+            "intro": "TenRusl Highlight Code (the “Service”) is a web app (PWA) for code highlighting. We respect your privacy.",
             "summary": {
                 "heading": "Summary",
                 "item1": "We may use Google AdSense to serve ads.",
@@ -71,7 +71,7 @@
         },
 
         "terms": {
-            "title": "Terms of Service — TenRusli Highlight Code",
+            "title": "Terms of Service — TenRusl Highlight Code",
             "heading": "Terms of Service",
             "items": [
                 { "title": "Acceptance", "body": "By accessing the Service, you agree to these terms." },
@@ -92,7 +92,7 @@
         },
 
         "cookies": {
-            "title": "Cookie Policy — TenRusli Highlight Code",
+            "title": "Cookie Policy — TenRusl Highlight Code",
             "heading": "Cookie Policy",
             "intro": "We use cookies and similar technologies for essential functions, analytics, and advertising (as consented).",
             "types": {
@@ -126,7 +126,7 @@
         },
 
         "contact": {
-            "title": "Kontak — TenRusli Highlight Code",
+            "title": "Kontak — TenRusl Highlight Code",
             "heading": "Kontak",
             "description": "Kami senang mendengar dari Anda.",
             "form": {
@@ -149,9 +149,9 @@
         },
 
         "privacy": {
-            "title": "Kebijakan Privasi — TenRusli Highlight Code",
+            "title": "Kebijakan Privasi — TenRusl Highlight Code",
             "heading": "Kebijakan Privasi",
-            "intro": "TenRusli Highlight Code (“Layanan”) adalah aplikasi web (PWA) untuk highlight kode. Kami menghargai privasi Anda.",
+            "intro": "TenRusl Highlight Code (“Layanan”) adalah aplikasi web (PWA) untuk highlight kode. Kami menghargai privasi Anda.",
             "summary": {
                 "heading": "Ringkasan",
                 "item1": "Kami dapat menggunakan Google AdSense untuk menayangkan iklan.",
@@ -182,7 +182,7 @@
         },
 
         "terms": {
-            "title": "Ketentuan Layanan — TenRusli Highlight Code",
+            "title": "Ketentuan Layanan — TenRusl Highlight Code",
             "heading": "Ketentuan Layanan",
             "items": [
                 { "title": "Penerimaan", "body": "Dengan mengakses Layanan, Anda menyetujui ketentuan ini." },
@@ -206,7 +206,7 @@
         },
 
         "cookies": {
-            "title": "Kebijakan Cookie — TenRusli Highlight Code",
+            "title": "Kebijakan Cookie — TenRusl Highlight Code",
             "heading": "Kebijakan Cookie",
             "intro": "Kami menggunakan cookie dan teknologi serupa untuk fungsi esensial, analitik, dan periklanan (sesuai persetujuan).",
             "types": {

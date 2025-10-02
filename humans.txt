@@ -1,6 +1,6 @@
 /* 
 TEAM
-  Developer: TenRusli (TRHC)
+  Developer: TenRusl
   Site: https://tenrusl-highlightcode.pages.dev
   GitHub: https://github.com/kakrusliandika/TenRusl-HighlightCode
 

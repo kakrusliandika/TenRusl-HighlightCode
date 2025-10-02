@@ -1,5 +1,5 @@
 {
-    "name": "TenRusli Highlight Code",
+    "name": "TenRusl Highlight Code",
     "short_name": "TRHC",
     "description": "Lightweight, fast, secure PWA code highlighter with PrismJS autoloader.",
     "start_url": "/?utm_source=pwa",

@@ -63,7 +63,7 @@
       <div class="brand">
         <img src="/assets/images/icon.svg" width="28" height="28" alt="TRHC" />
         <strong>
-          <span class="brand-full">TenRusli Highlight Code</span>
+          <span class="brand-full">TenRusl Highlight Code</span>
           <span class="brand-abbr">TRHC</span>
         </strong>
         <span class="badge">PWA</span>

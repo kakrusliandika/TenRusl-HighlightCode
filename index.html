@@ -317,7 +317,7 @@
             </section>
         </main>
 
-        <!-- AdSense block -->
+        <!-- (Optional) AdSense -->
         <div style="padding: 20px">
             <ins
                 class="adsbygoogle"
@@ -340,5 +340,11 @@
         <script defer src="/assets/js/header.js"></script>
         <script defer src="/assets/js/app.js"></script>
         <script defer src="/assets/js/footer.js"></script>
+
+        <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("/assets/js/sw.js").catch(() => {});
+            }
+        </script>
     </body>
 </html>
