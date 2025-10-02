@@ -380,9 +380,9 @@ This project follows the **Contributor Covenant**. Please see `CODE_OF_CONDUCT.m
 
 ## 👤 Author
 
-**Andika Rusli (TenRusl)**  
-**Site**: https://tenrusl-highlightcode.pages.dev
-**GitHub**: https://github.com/kakrusliandika/TenRusl-HighlightCode
+-   **Andika Rusli (TenRusl)**
+-   **Site**: https://tenrusl-highlightcode.pages.dev
+-   **GitHub**: https://github.com/kakrusliandika/TenRusl-HighlightCode
 
 ---
 
