@@ -172,6 +172,8 @@ git push origin feat/awesome-improvements
 │  │  ├─ app.css
 │  │  ├─ chrome.css
 │  │  ├─ language.css
+│  │  ├─ header.css
+│  │  ├─ footer.css
 │  │  ├─ pages.css
 │  │  └─ theme.css
 │  ├─ images/
